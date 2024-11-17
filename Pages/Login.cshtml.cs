@@ -50,7 +50,7 @@ namespace MakebA_Inven_System.Pages
 						if (count > 0)
 						{
 							Message = "Login successful!";
-							return RedirectToPage("/Inbox"); // เปลี่ยนเป็นหน้าเป้าหมายหลังล็อกอินสำเร็จ
+							return RedirectToPage("/Index"); // เปลี่ยนเป็นหน้าเป้าหมายหลังล็อกอินสำเร็จ
 						}
 						else
 						{
