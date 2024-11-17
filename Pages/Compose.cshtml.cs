@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace MakebA_Inven_System.Pages
 {
@@ -35,7 +36,7 @@ namespace MakebA_Inven_System.Pages
 
 					using (SqlCommand command = new SqlCommand(query, connection))
 					{
-						string loggedInSender = "current_user@example.com"; // แทนที่ด้วยผู้ใช้ล็อกอินจริง
+						string loggedInSender = User.Identity?.Name ?? "default_user@example.com";
 						command.Parameters.AddWithValue("@Sender", loggedInSender);
 						command.Parameters.AddWithValue("@Recipient", Input.To);
 						command.Parameters.AddWithValue("@Subject", Input.Subject);
@@ -46,7 +47,7 @@ namespace MakebA_Inven_System.Pages
 				}
 
 				Message = "Message sent successfully!";
-				return RedirectToPage("/Inbox");
+				return RedirectToPage("/Inbox"); // กลับไปยังหน้า Inbox หลังส่งข้อความ
 			}
 			catch (Exception ex)
 			{

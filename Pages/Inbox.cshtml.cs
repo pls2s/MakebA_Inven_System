@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
+using System;
 
 namespace MakebA_Inven_System.Pages
 {
@@ -12,12 +13,22 @@ namespace MakebA_Inven_System.Pages
 
 		public void OnGet()
 		{
+			// ใช้อีเมลผู้ใช้ที่ล็อกอิน
+			string currentUserEmail = User.Identity?.Name ?? "default_user@example.com";
+
 			using (SqlConnection connection = new SqlConnection(_connectionString))
 			{
 				connection.Open();
-				string query = "SELECT Sender, Subject, Body, Timestamp FROM Emails WHERE Recipient = 'current_user@example.com'"; // เปลี่ยนเป็นอีเมลผู้ใช้งานจริง
+				string query = @"
+                    SELECT Sender, Subject, Body, Timestamp 
+                    FROM Emails 
+                    WHERE Recipient = @Recipient 
+                    ORDER BY Timestamp DESC";
+
 				using (SqlCommand command = new SqlCommand(query, connection))
 				{
+					command.Parameters.AddWithValue("@Recipient", currentUserEmail);
+
 					using (var reader = command.ExecuteReader())
 					{
 						while (reader.Read())
