@@ -1,37 +1,28 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 
 namespace MakebA_Inven_System.Pages
 {
 	public class InboxModel : PageModel
 	{
-		public List<Message> Messages { get; set; } = new List<Message>();
+		public List<MessageModel> Messages { get; set; } = new List<MessageModel>();
 
-		private readonly string _connectionString = "Server=tcp:your_server.database.windows.net,1433;Initial Catalog=your_database;Persist Security Info=False;User ID=your_user;Password=your_password;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+		private readonly string _connectionString = "Server=tcp:makebafinal.database.windows.net,1433;Initial Catalog=makeba;Persist Security Info=False;User ID=makeba;Password=Pls2s0727;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
-		public async Task OnGetAsync()
+		public void OnGet()
 		{
-			using (var connection = new SqlConnection(_connectionString))
+			using (SqlConnection connection = new SqlConnection(_connectionString))
 			{
-				await connection.OpenAsync();
-
-				string query = @"
-                    SELECT Sender, Subject, Body, Timestamp 
-                    FROM Messages 
-                    WHERE Recipient = @Recipient";
-
-				using (var command = new SqlCommand(query, connection))
+				connection.Open();
+				string query = "SELECT Sender, Subject, Body, Timestamp FROM Emails WHERE Recipient = 'current_user@example.com'"; // เปลี่ยนเป็นอีเมลผู้ใช้งานจริง
+				using (SqlCommand command = new SqlCommand(query, connection))
 				{
-					// Replace "current_user" with the actual logged-in user's email or username
-					command.Parameters.AddWithValue("@Recipient", "current_user@example.com");
-
-					using (var reader = await command.ExecuteReaderAsync())
+					using (var reader = command.ExecuteReader())
 					{
-						while (await reader.ReadAsync())
+						while (reader.Read())
 						{
-							Messages.Add(new Message
+							Messages.Add(new MessageModel
 							{
 								Sender = reader.GetString(0),
 								Subject = reader.GetString(1),
@@ -44,7 +35,7 @@ namespace MakebA_Inven_System.Pages
 			}
 		}
 
-		public class Message
+		public class MessageModel
 		{
 			public string Sender { get; set; }
 			public string Subject { get; set; }

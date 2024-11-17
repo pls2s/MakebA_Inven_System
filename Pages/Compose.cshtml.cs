@@ -10,13 +10,11 @@ namespace MakebA_Inven_System.Pages
 		[BindProperty]
 		public InputModel Input { get; set; }
 
-		public string Message { get; set; } // Feedback message
+		public string Message { get; set; }
 
 		private readonly string _connectionString = "Server=tcp:makebafinal.database.windows.net,1433;Initial Catalog=makeba;Persist Security Info=False;User ID=makeba;Password=Pls2s0727;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
-		public void OnGet()
-		{
-		}
+		public void OnGet() { }
 
 		public async Task<IActionResult> OnPostAsync()
 		{
@@ -37,8 +35,7 @@ namespace MakebA_Inven_System.Pages
 
 					using (SqlCommand command = new SqlCommand(query, connection))
 					{
-						// Assuming you fetch the logged-in user's email as the sender
-						string loggedInSender = "current_user@example.com"; // Replace with actual logged-in user
+						string loggedInSender = "current_user@example.com"; // แทนที่ด้วยผู้ใช้ล็อกอินจริง
 						command.Parameters.AddWithValue("@Sender", loggedInSender);
 						command.Parameters.AddWithValue("@Recipient", Input.To);
 						command.Parameters.AddWithValue("@Subject", Input.Subject);
