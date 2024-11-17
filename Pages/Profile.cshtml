@@ -9,10 +9,10 @@
     <aside class="sidebar">
         <h3>Menu</h3>
         <ul>
-            <li><a href="/Inbox" class="sidebar-link">Inbox</a></li>
-            <li><a href="/Compose" class="sidebar-link">Compose</a></li>
-            <li><a href="/Sent" class="sidebar-link">Sent</a></li>
-            <li><a href="/Profile" class="sidebar-link active">Profile</a></li>
+            <li><a href="/Inbox">Inbox</a></li>
+            <li><a href="/Compose">Compose</a></li>
+            <li><a href="/Sent">Sent</a></li>
+            <li><a href="/Profile" class="active">Profile</a></li>
         </ul>
     </aside>
 
@@ -24,22 +24,22 @@
         </div>
 
         <!-- Profile Details Card -->
-        <div class="message-card">
+        <div class="profile-card">
             <div class="profile-section">
                 <label for="username">Username:</label>
-                <span>@Model.Profile.Username</span>
+                <span>@Model.User.Username</span>
             </div>
             <div class="profile-section">
                 <label for="email">Email:</label>
-                <span>@Model.Profile.Email</span>
+                <span>@Model.User.Email</span>
             </div>
             <div class="profile-section">
                 <label for="role">Role:</label>
-                <span>@Model.Profile.Role</span>
+                <span>@Model.User.Role</span>
             </div>
             <div class="profile-section">
                 <label for="joined">Date Joined:</label>
-                <span>@Model.Profile.DateJoined.ToString("dd MMM yyyy")</span>
+                <span>@Model.User.DateJoined.ToString("dd MMM yyyy")</span>
             </div>
         </div>
 
@@ -53,117 +53,118 @@
 </div>
 
 <style>
-    /* General Layout */
+    /* General Styling */
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(135deg, #1e293b, #24324e);
+        color: #e0e0e0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
     .inbox-container {
         display: flex;
-        max-width: 1200px;
         width: 90%;
-        margin: auto;
-        background: rgba(28, 33, 41, 0.95);
+        max-width: 1200px;
+        background: #2d3748;
         border-radius: 12px;
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         overflow: hidden;
     }
 
-    /* Sidebar Styling */
     .sidebar {
         width: 300px;
         background: #1e293b;
         padding: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
         border-right: 1px solid rgba(255, 255, 255, 0.1);
     }
 
         .sidebar h3 {
             color: #58a6ff;
+            text-align: center;
             font-size: 1.5rem;
             margin-bottom: 20px;
-            text-align: center;
         }
 
         .sidebar ul {
             list-style: none;
             padding: 0;
             margin: 0;
-            width: 100%;
         }
 
-    .sidebar-link {
-        display: block;
-        text-decoration: none;
-        color: #e0e0e0;
-        font-size: 1.1rem;
-        padding: 10px 15px;
-        border-radius: 8px;
-        text-align: center;
-        transition: background 0.3s ease, color 0.3s ease;
-    }
+            .sidebar ul li {
+                margin: 10px 0;
+            }
 
-        .sidebar-link:hover,
-        .sidebar-link.active {
-            background: #58a6ff;
-            color: #ffffff;
-        }
+                .sidebar ul li a {
+                    text-decoration: none;
+                    color: #e0e0e0;
+                    display: block;
+                    padding: 10px 15px;
+                    border-radius: 6px;
+                    transition: background 0.3s, color 0.3s;
+                }
 
-    /* Content Styling */
+                    .sidebar ul li a:hover,
+                    .sidebar ul li a.active {
+                        background: #58a6ff;
+                        color: #ffffff;
+                    }
+
     .content {
         flex: 1;
-        padding: 40px;
-        margin: auto;
+        padding: 30px;
     }
 
     .header h2 {
         font-size: 2rem;
         color: #58a6ff;
-        text-align: center;
+        margin-bottom: 10px;
     }
 
     .header p {
-        font-size: 1rem;
+        font-size: 1.1rem;
         color: #a0aec0;
-        text-align: center;
-        margin-bottom: 30px;
     }
 
-    /* Profile Details Styling */
-    .message-card {
+    .profile-card {
         background: #1c2025;
         padding: 20px;
         border-radius: 12px;
+        margin: 20px 0;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        margin-bottom: 20px;
-        font-size: 1.1rem;
     }
 
     .profile-section {
         margin: 15px 0;
-        display: flex;
-        justify-content: space-between;
+        font-size: 1.1rem;
     }
 
         .profile-section label {
             color: #58a6ff;
             font-weight: bold;
+            display: inline-block;
+            min-width: 140px;
         }
 
         .profile-section span {
             color: #e0e0e0;
         }
 
-    /* Profile Action Buttons */
     .profile-actions {
         display: flex;
-        justify-content: center;
-        gap: 20px;
+        justify-content: flex-start;
+        gap: 15px;
+        margin-top: 20px;
     }
 
     .btn-primary {
-        background-color: #58a6ff;
+        background: #58a6ff;
         color: #ffffff;
-        border: none;
-        font-size: 1rem;
         padding: 10px 20px;
         border-radius: 8px;
         text-decoration: none;
@@ -171,14 +172,12 @@
     }
 
         .btn-primary:hover {
-            background-color: #357abd;
+            background: #357abd;
         }
 
     .btn-danger {
-        background-color: #e53e3e;
+        background: #e53e3e;
         color: #ffffff;
-        border: none;
-        font-size: 1rem;
         padding: 10px 20px;
         border-radius: 8px;
         text-decoration: none;
@@ -186,6 +185,6 @@
     }
 
         .btn-danger:hover {
-            background-color: #c53030;
+            background: #c53030;
         }
 </style>
