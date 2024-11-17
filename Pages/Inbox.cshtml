@@ -1,0 +1,170 @@
+﻿@page
+@model MakebA_Inven_System.Pages.InboxModel
+@{
+    ViewData["Title"] = "Inbox";
+}
+
+<div class="inbox-container">
+    <!-- Sidebar Menu -->
+    <aside class="sidebar">
+        <h3>Menu</h3>
+        <ul>
+            <li><a href="/Inbox" class="active">Inbox</a></li>
+            <li><a href="/Compose">Compose</a></li>
+            <li><a href="/Sent">Sent</a></li>
+            <li><a href="/Profile">Profile</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="content">
+        <div class="header">
+            <h2>Your Inbox</h2>
+            <p>Below are your recent messages:</p>
+        </div>
+
+        <!-- Messages Section -->
+        <div class="messages">
+            @if (Model.Messages.Any())
+            {
+                @foreach (var message in Model.Messages)
+                {
+                    <div class="message-card">
+                        <div class="message-header">
+                            <h4>@message.Subject</h4>
+                            <span class="badge badge-new">New</span>
+                        </div>
+                        <div class="message-body">
+                            <p><strong>From:</strong> @message.Sender</p>
+                            <p><strong>Date:</strong> @message.Timestamp.ToString("dd MMM yyyy, HH:mm")</p>
+                            <p><strong>Message:</strong> @message.Body.Substring(0, Math.Min(100, message.Body.Length))...</p>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="no-messages">You have no messages in your inbox.</p>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Container Styling */
+    .inbox-container {
+        display: flex;
+        width: 90%;
+        max-width: 1200px;
+        background: #2d3748;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        margin: 20px auto;
+    }
+
+    /* Sidebar Styling */
+    .sidebar {
+        width: 300px;
+        background: #1e293b;
+        padding: 20px;
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+        .sidebar h3 {
+            text-align: center;
+            color: #58a6ff;
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+            .sidebar ul li {
+                margin: 10px 0;
+            }
+
+                .sidebar ul li a {
+                    display: block;
+                    text-decoration: none;
+                    color: #e0e0e0;
+                    padding: 10px 15px;
+                    border-radius: 8px;
+                }
+
+                    .sidebar ul li a.active {
+                        background-color: #58a6ff;
+                        color: #fff;
+                    }
+
+    /* Content Styling */
+    .content {
+        flex: 1;
+        padding: 30px;
+        background: #1e293b;
+    }
+
+    .header {
+        margin-bottom: 20px;
+    }
+
+        .header h2 {
+            font-size: 2rem;
+            color: #58a6ff;
+            margin-bottom: 10px;
+        }
+
+    .messages {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .message-card {
+        background: #2d3748;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .message-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        .message-header h4 {
+            margin: 0;
+            font-size: 1.3rem;
+            color: #58a6ff;
+        }
+
+    .badge {
+        padding: 5px 10px;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        color: #fff;
+    }
+
+    .badge-new {
+        background: #58a6ff;
+    }
+
+    .message-body {
+        margin-top: 10px;
+    }
+
+        .message-body p {
+            margin: 5px 0;
+            color: #e0e0e0;
+        }
+
+    .no-messages {
+        text-align: center;
+        font-size: 1.2rem;
+        color: #a0aec0;
+        margin-top: 20px;
+    }
+</style>
