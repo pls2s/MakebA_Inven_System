@@ -5,7 +5,6 @@
 }
 
 <div class="inbox-container">
-    <!-- Sidebar Menu -->
     <aside class="sidebar">
         <h3>Menu</h3>
         <ul>
@@ -16,23 +15,21 @@
         </ul>
     </aside>
 
-    <!-- Main Content -->
     <div class="content">
         <div class="header">
             <h2>Your Inbox</h2>
-            <p>Below are your recent messages:</p>
+            <p>Below are the messages for your account: <strong>@Model.LoggedInUserEmail</strong></p>
         </div>
 
-        <!-- Messages Section -->
         <div class="messages">
-            @if (Model.Messages != null && Model.Messages.Any())
+            @if (Model.Messages.Any())
             {
                 @foreach (var message in Model.Messages)
                 {
                     <div class="message-card">
                         <div class="message-header">
                             <h4>@message.Subject</h4>
-                            @if (!message.IsRead)
+                            @if (message.IsNew)
                             {
                                 <span class="badge badge-new">New</span>
                             }
@@ -47,7 +44,7 @@
             }
             else
             {
-                <p class="no-messages">You have no messages in your inbox.</p>
+                <p class="no-messages">No messages found for your inbox.</p>
             }
         </div>
     </div>

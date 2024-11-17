@@ -11,15 +11,21 @@ namespace MakebA_Inven_System.Pages
 
 		public List<EmailModel> Messages { get; set; } = new List<EmailModel>();
 
-		public string LoggedInUser { get; set; } // Holds the logged-in user's email
+		public string LoggedInUserEmail { get; set; }
 
 		public void OnGet()
 		{
-			// Use logged-in user's email, replace this with dynamic authentication logic
-			LoggedInUser = User.Identity?.Name ?? "current_user@example.com";
-
 			try
 			{
+				// Fetch the logged-in user's email dynamically
+				LoggedInUserEmail = User.Identity?.Name;
+
+				if (string.IsNullOrEmpty(LoggedInUserEmail))
+				{
+					Console.WriteLine("No logged-in user email found.");
+					return;
+				}
+
 				using (SqlConnection connection = new SqlConnection(_connectionString))
 				{
 					connection.Open();
@@ -32,7 +38,7 @@ namespace MakebA_Inven_System.Pages
 
 					using (SqlCommand command = new SqlCommand(query, connection))
 					{
-						command.Parameters.AddWithValue("@Recipient", LoggedInUser);
+						command.Parameters.AddWithValue("@Recipient", LoggedInUserEmail);
 
 						using (SqlDataReader reader = command.ExecuteReader())
 						{
@@ -56,13 +62,13 @@ namespace MakebA_Inven_System.Pages
 					}
 				}
 			}
-			catch (SqlException sqlEx)
+			catch (SqlException ex)
 			{
-				Console.WriteLine($"SQL Error: {sqlEx.Message}");
+				Console.WriteLine($"SQL Error: {ex.Message}");
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine($"An error occurred: {ex.Message}");
+				Console.WriteLine($"Error: {ex.Message}");
 			}
 		}
 
