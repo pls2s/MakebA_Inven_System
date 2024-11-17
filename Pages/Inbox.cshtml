@@ -51,7 +51,15 @@
 </div>
 
 <style>
-    /* Container Styling */
+    /* General Styling */
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(135deg, #2a4365, #1e293b); /* พื้นหลังแบบ Gradient */
+        color: #f4f4f4; /* ข้อความสีขาว */
+    }
+
     .inbox-container {
         display: flex;
         width: 90%;
@@ -63,7 +71,6 @@
         margin: 20px auto;
     }
 
-    /* Sidebar Styling */
     .sidebar {
         width: 300px;
         background: #1e293b;
@@ -72,8 +79,9 @@
     }
 
         .sidebar h3 {
-            text-align: center;
             color: #58a6ff;
+            text-align: center;
+            font-size: 1.5rem;
             margin-bottom: 20px;
         }
 
@@ -87,34 +95,35 @@
             }
 
                 .sidebar ul li a {
-                    display: block;
                     text-decoration: none;
                     color: #e0e0e0;
+                    display: block;
                     padding: 10px 15px;
-                    border-radius: 8px;
+                    border-radius: 6px;
+                    transition: background 0.3s, color 0.3s;
                 }
 
+                    .sidebar ul li a:hover,
                     .sidebar ul li a.active {
-                        background-color: #58a6ff;
-                        color: #fff;
+                        background: #58a6ff;
+                        color: #ffffff;
                     }
 
-    /* Content Styling */
     .content {
         flex: 1;
         padding: 30px;
-        background: #1e293b;
     }
 
-    .header {
-        margin-bottom: 20px;
+    .header h2 {
+        font-size: 2rem;
+        color: #58a6ff;
+        margin-bottom: 10px;
     }
 
-        .header h2 {
-            font-size: 2rem;
-            color: #58a6ff;
-            margin-bottom: 10px;
-        }
+    .header p {
+        font-size: 1.1rem;
+        color: #a0aec0;
+    }
 
     .messages {
         display: flex;
@@ -123,10 +132,10 @@
     }
 
     .message-card {
-        background: #2d3748;
+        background: #1c2025;
         padding: 20px;
         border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     }
 
     .message-header {

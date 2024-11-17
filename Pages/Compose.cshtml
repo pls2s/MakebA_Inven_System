@@ -61,3 +61,173 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
+<style>
+    /* General Styles */
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(135deg, #2a4365, #1e293b); /* พื้นหลังแบบ Gradient */
+        color: #f4f4f4; /* ข้อความสีขาว */
+    }
+
+    .inbox-container {
+        display: flex;
+        width: 90%;
+        max-width: 1200px;
+        background: #1e293b;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* เพิ่มเงา */
+        overflow: hidden;
+        margin: 20px auto;
+    }
+
+    .sidebar {
+        width: 300px;
+        background: #2c5282;
+        padding: 20px;
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+        .sidebar h3 {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #edf2f7;
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+            .sidebar ul li {
+                margin: 10px 0;
+            }
+
+                .sidebar ul li a {
+                    text-decoration: none;
+                    color: #e2e8f0;
+                    padding: 10px 15px;
+                    border-radius: 8px;
+                    display: block;
+                    transition: all 0.3s ease;
+                }
+
+                    .sidebar ul li a.active,
+                    .sidebar ul li a:hover {
+                        background-color: #63b3ed;
+                        color: #fff;
+                    }
+
+    .content {
+        flex: 1;
+        padding: 30px;
+    }
+
+    .header {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+        .header h2 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #63b3ed;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #cbd5e0;
+        }
+
+    .messages {
+        margin-top: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+        .form-group label {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #a0aec0;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #4a5568;
+        border-radius: 8px;
+        background-color: #2d3748;
+        color: #f4f4f4;
+        font-size: 1rem;
+    }
+
+        .form-control::placeholder {
+            color: #a0aec0;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #63b3ed;
+            box-shadow: 0 0 5px rgba(99, 179, 237, 0.5);
+        }
+
+    .form-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .btn-primary {
+        background-color: #63b3ed;
+        color: #fff;
+        padding: 10px 20px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #4299e1;
+        }
+
+    .btn-secondary {
+        background-color: #2d3748;
+        color: #f4f4f4;
+        padding: 10px 20px;
+        font-size: 1rem;
+        border: 1px solid #4a5568;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+        .btn-secondary:hover {
+            background-color: #4a5568;
+        }
+
+    .alert {
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-size: 1rem;
+    }
+
+    .alert-success {
+        background-color: #38a169;
+        color: #fff;
+    }
+
+    .alert-danger {
+        background-color: #e53e3e;
+        color: #fff;
+    }
+</style>
