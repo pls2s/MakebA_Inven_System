@@ -5,98 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - MakebA_Inven_System</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
     <style>
-        /* พื้นที่เต็มหน้าจอ */
-        html, body {
-            height: 100%;
+        /* Custom styles for the layout */
+        body {
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #1d3557, #457b9d); /* พื้นหลังสีเข้ม */
-            color: #fff; /* ข้อความสีขาว */
             font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1d3557, #457b9d);
+            color: #e0e0e0;
+        }
+
+        header, footer {
+            background: #1c1f26;
+            padding: 15px;
+            color: #e0e0e0;
+            text-align: center;
         }
 
         main {
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            min-height: 80vh; /* Ensure content takes up enough space */
+            padding: 20px;
         }
-
-        .content-container {
-            width: 100%;
-            max-width: 500px;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); /* เพิ่มเงาให้ดูเหมือนลอย */
-            background: transparent; /* เอาสีขาวออก */
-        }
-
-            .content-container h2 {
-                font-size: 2rem;
-                font-weight: bold;
-                text-align: center;
-                margin-bottom: 20px;
-                color: #f4f4f4; /* หัวข้อสีขาว */
-            }
-
-        /* ช่องกรอกข้อมูล */
-        .form-control {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 10px;
-            font-size: 1rem;
-            background: rgba(255, 255, 255, 0.1); /* โปร่งแสง */
-            color: #fff;
-        }
-
-            .form-control::placeholder {
-                color: #ccc; /* Placeholder สีเทาอ่อน */
-            }
-
-            .form-control:focus {
-                border-color: #4a90e2;
-                box-shadow: 0 0 8px rgba(74, 144, 226, 0.4);
-            }
-
-        /* ปุ่ม */
-        .btn-primary {
-            background-color: #4a90e2;
-            border: none;
-            font-size: 1rem;
-            font-weight: bold;
-            border-radius: 8px;
-            padding: 10px;
-            transition: all 0.3s ease;
-            color: #fff;
-        }
-
-            .btn-primary:hover {
-                background-color: #357abd;
-            }
-
-        .btn-secondary {
-            background-color: rgba(255, 255, 255, 0.1); /* โปร่งแสง */
-            border: 1px solid #ccc;
-            font-size: 1rem;
-            border-radius: 8px;
-            padding: 10px;
-            transition: all 0.3s ease;
-            color: #fff;
-        }
-
-            .btn-secondary:hover {
-                background-color: rgba(255, 255, 255, 0.2);
-            }
     </style>
 </head>
 <body>
-    <main>
-        <div class="content-container">
-            @RenderBody()
-        </div>
+    
+        @RenderBody()
     </main>
-
+ 
     @RenderSection("Scripts", required: false)
 </body>
 </html>
