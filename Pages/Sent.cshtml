@@ -51,17 +51,13 @@
 </div>
 
 <style>
-    /* General Styles */
+    /* General Styling */
     body {
         margin: 0;
         padding: 0;
         font-family: 'Arial', sans-serif;
         background: linear-gradient(135deg, #1e293b, #24324e);
         color: #e0e0e0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
     }
 
     .inbox-container {
@@ -72,7 +68,7 @@
         border-radius: 12px;
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         overflow: hidden;
-        margin: 0 auto;
+        margin: 20px auto;
     }
 
     .sidebar {
@@ -83,16 +79,14 @@
     }
 
         .sidebar h3 {
-            color: #58a6ff;
             text-align: center;
-            font-size: 1.5rem;
+            color: #58a6ff;
             margin-bottom: 20px;
         }
 
         .sidebar ul {
             list-style: none;
             padding: 0;
-            margin: 0;
         }
 
             .sidebar ul li {
@@ -117,11 +111,13 @@
     .content {
         flex: 1;
         padding: 30px;
+        background: #1e293b;
     }
 
     .header h2 {
         font-size: 2rem;
         color: #58a6ff;
+        margin-bottom: 10px;
     }
 
     .header p {
@@ -130,6 +126,9 @@
     }
 
     .messages {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
         overflow-y: auto;
         max-height: 60vh;
         padding-right: 10px;
