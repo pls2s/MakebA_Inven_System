@@ -9,7 +9,7 @@ namespace MakebA_Inven_System.Pages
 	{
 		private readonly string _connectionString = "Server=tcp:makebafinal.database.windows.net,1433;Initial Catalog=makeba;Persist Security Info=False;User ID=makeba;Password=Pls2s0727;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
-		public List<Email> SentMessages { get; set; } = new List<Email>();
+		public List<Emails> SentMessages { get; set; } = new List<Emails>();
 
 		public string LoggedInUser { get; set; } // Fetch dynamically from the logged-in user
 
@@ -38,7 +38,7 @@ namespace MakebA_Inven_System.Pages
 						{
 							while (reader.Read())
 							{
-								SentMessages.Add(new Email
+								SentMessages.Add(new Emails
 								{
 									EmailID = reader.GetInt32(0),
 									Sender = reader.GetString(1),
