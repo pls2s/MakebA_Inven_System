@@ -1,50 +1,89 @@
 ﻿@page
-@model MakebA_Inven_System.Pages.InboxModel
+@model MakebA_Inven_System.Pages.IndexModel
 @{
-    ViewData["Title"] = "Inbox";
+    ViewData["Title"] = "Welcome";
 }
 
-<div class="inbox-container">
-    <!-- Sidebar Menu -->
-    <aside class="sidebar">
-        <h3>Menu</h3>
-        <ul>
-            <li><a href="/Inbox" class="active">Inbox</a></li>
-            <li><a href="/Compose">Compose</a></li>
-            <li><a href="/Sent">Sent</a></li>
-            <li><a href="/Profile">Profile</a></li>
-        </ul>
-    </aside>
+<div class="container">
+    <!-- Header Section -->
+    <div class="header">
+        <h2>Welcome to MakebA System</h2>
+        <p>Please log in or register to start using the system.</p>
+    </div>
 
-    <!-- Main Content -->
-    <div class="content">
-        <div class="header">
-            <h2>Your Inbox</h2>
-            <p>Below are your recent messages:</p>
-        </div>
-
-        <div class="messages">
-            @if (Model.Messages.Any())
-            {
-                @foreach (var message in Model.Messages)
-                {
-                    <div class="message-card">
-                        <div class="message-header">
-                            <h4>@message.Subject</h4>
-                            <span class="badge badge-new">New</span>
-                        </div>
-                        <div class="message-body">
-                            <p><strong>From:</strong> @message.Sender</p>
-                            <p><strong>Date:</strong> @message.Timestamp.ToString("dd MMM yyyy, HH:mm")</p>
-                            <p><strong>Message:</strong> @message.Body.Substring(0, Math.Min(100, message.Body.Length))...</p>
-                        </div>
-                    </div>
-                }
-            }
-            else
-            {
-                <p class="no-messages">You have no messages in your inbox.</p>
-            }
-        </div>
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <a href="/Login" class="btn btn-primary">Login</a>
+        <a href="/Register" class="btn btn-secondary">Register</a>
     </div>
 </div>
+
+<style>
+    /* General Styling */
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(135deg, #1e293b, #24324e);
+        color: #e0e0e0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .container {
+        text-align: center;
+        max-width: 600px;
+        padding: 20px;
+        background: #2d3748;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .header h2 {
+        color: #58a6ff;
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+
+    .header p {
+        font-size: 1.1rem;
+        color: #a0aec0;
+        margin-bottom: 20px;
+    }
+
+    .action-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .btn {
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: bold;
+        text-decoration: none;
+        color: #fff;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .btn-primary {
+        background: #58a6ff;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background: #357abd;
+        }
+
+    .btn-secondary {
+        background: #6c757d;
+        border: none;
+    }
+
+        .btn-secondary:hover {
+            background: #495057;
+        }
+</style>

@@ -23,22 +23,13 @@
             align-items: center;
         }
 
-        .content-container {
-            width: 100%;
-            max-width: 500px;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); /* เพิ่มเงาให้ดูเหมือนลอย */
-            background: transparent; /* เอาสีขาวออก */
+        h2 {
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #f4f4f4; /* หัวข้อสีขาว */
         }
-
-            .content-container h2 {
-                font-size: 2rem;
-                font-weight: bold;
-                text-align: center;
-                margin-bottom: 20px;
-                color: #f4f4f4; /* หัวข้อสีขาว */
-            }
 
         /* ช่องกรอกข้อมูล */
         .form-control {
@@ -92,9 +83,7 @@
 </head>
 <body>
     <main>
-        <div class="content-container">
-            @RenderBody()
-        </div>
+        @RenderBody()
     </main>
 
     @RenderSection("Scripts", required: false)
