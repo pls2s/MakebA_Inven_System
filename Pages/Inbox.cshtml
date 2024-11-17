@@ -25,14 +25,17 @@
 
         <!-- Messages Section -->
         <div class="messages">
-            @if (Model.Messages.Any())
+            @if (Model.Messages != null && Model.Messages.Any())
             {
                 @foreach (var message in Model.Messages)
                 {
                     <div class="message-card">
                         <div class="message-header">
                             <h4>@message.Subject</h4>
-                            <span class="badge badge-new">New</span>
+                            @if (!message.IsRead)
+                            {
+                                <span class="badge badge-new">New</span>
+                            }
                         </div>
                         <div class="message-body">
                             <p><strong>From:</strong> @message.Sender</p>
