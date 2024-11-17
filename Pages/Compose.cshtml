@@ -1,0 +1,191 @@
+﻿@page
+@model MakebA_Inven_System.Pages.ComposeModel
+@{
+    ViewData["Title"] = "Compose";
+}
+
+<div class="inbox-container">
+    <!-- Sidebar Menu -->
+    <aside class="sidebar">
+        <h3>Menu</h3>
+        <ul>
+            <li><a href="/Inbox">Inbox</a></li>
+            <li><a href="/Compose" class="active">Compose</a></li>
+            <li><a href="/Sent">Sent</a></li>
+            <li><a href="/Profile">Profile</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="content">
+        <div class="header">
+            <h2>Compose New Message</h2>
+            <p>Fill out the form below to send a message:</p>
+        </div>
+
+        <div class="messages">
+            <div class="message-card">
+                @if (!string.IsNullOrEmpty(Model.Message))
+                {
+                    <div class="alert @(Model.Message.Contains("successfully") ? "alert-success" : "alert-danger")">
+                        @Model.Message
+                    </div>
+                }
+
+                <form method="post" class="compose-form">
+                    <div class="form-group">
+                        <label for="to">Recipient:</label>
+                        <input asp-for="Input.To" class="form-control" placeholder="Enter recipient email" />
+                        <span asp-validation-for="Input.To" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject:</label>
+                        <input asp-for="Input.Subject" class="form-control" placeholder="Enter subject" />
+                        <span asp-validation-for="Input.Subject" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="body">Message:</label>
+                        <textarea asp-for="Input.Body" class="form-control" rows="8" placeholder="Type your message here..."></textarea>
+                        <span asp-validation-for="Input.Body" class="text-danger"></span>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Send</button>
+                        <a href="/Inbox" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<style>
+    /* General Styles */
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(135deg, #1e293b, #24324e);
+        color: #e0e0e0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    .inbox-container {
+        display: flex;
+        width: 90%;
+        max-width: 1200px;
+        background: #2d3748;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+    }
+
+    .sidebar {
+        width: 300px;
+        background: #1e293b;
+        padding: 20px;
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+        .sidebar h3 {
+            color: #58a6ff;
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+            .sidebar ul li {
+                margin: 10px 0;
+            }
+
+                .sidebar ul li a {
+                    text-decoration: none;
+                    color: #e0e0e0;
+                    display: block;
+                    padding: 10px 15px;
+                    border-radius: 6px;
+                    transition: background 0.3s, color 0.3s;
+                }
+
+                    .sidebar ul li a:hover,
+                    .sidebar ul li a.active {
+                        background: #58a6ff;
+                        color: #ffffff;
+                    }
+
+    .content {
+        flex: 1;
+        padding: 30px;
+    }
+
+    .header h2 {
+        font-size: 2rem;
+        color: #58a6ff;
+    }
+
+    .header p {
+        font-size: 1.1rem;
+        color: #a0aec0;
+    }
+
+    .messages {
+        overflow-y: auto;
+        max-height: 60vh;
+        padding-right: 10px;
+    }
+
+    .message-card {
+        background: #1c2025;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+        .message-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+    .form-group label {
+        color: #58a6ff;
+        font-size: 1rem;
+    }
+
+    .form-control {
+        background: #1c1f26;
+        color: #e0e0e0;
+        border: 1px solid #444;
+        border-radius: 8px;
+        padding: 10px;
+        font-size: 1rem;
+    }
+
+    .btn-primary {
+        background: #58a6ff;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+    }
+</style>
