@@ -22,10 +22,11 @@
         margin: 0;
         padding: 0;
         font-family: 'Arial', sans-serif;
-        background: linear-gradient(135deg, #1d3557, #457b9d); /* พื้นหลังแบบ Gradient */
+        background: linear-gradient(135deg, #1e293b, #334155); /* พื้นหลังแบบ Gradient โทนเทา-น้ำเงิน */
         display: flex;
         justify-content: center;
         align-items: center;
+        color: #e2e8f0; /* สีข้อความพื้นฐาน */
     }
 
     /* คอนเทนเนอร์หลัก */
@@ -39,30 +40,30 @@
 
     /* คอนเทนเนอร์เนื้อหา */
     .welcome-content {
-        background: #ffffff;
+        background: #1e293b; /* พื้นหลังเข้มแบบกลมกลืน */
         padding: 40px;
         border-radius: 12px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* เงาที่ชัดเจนขึ้น */
         max-width: 600px;
         width: 100%;
         text-align: center;
     }
 
         .welcome-content h1 {
-            color: #1d3557;
+            color: #60a5fa; /* สีฟ้าสว่างสำหรับข้อความ */
             font-size: 2.5rem;
             margin-bottom: 20px;
         }
 
         .welcome-content p {
-            color: #555555;
+            color: #cbd5e1; /* สีเทาสว่างสำหรับข้อความรอง */
             font-size: 1.2rem;
             margin-bottom: 30px;
         }
 
     /* ปุ่ม */
     .btn-primary {
-        background-color: #457b9d;
+        background-color: #3b82f6; /* ฟ้าอ่อนที่ชัดเจน */
         color: #fff;
         border: none;
         font-size: 1.1rem;
@@ -72,13 +73,13 @@
     }
 
         .btn-primary:hover {
-            background-color: #1d3557;
+            background-color: #2563eb; /* สีฟ้าเข้มเมื่อ Hover */
         }
 
     .btn-secondary {
         background-color: transparent;
-        color: #457b9d;
-        border: 2px solid #457b9d;
+        color: #3b82f6;
+        border: 2px solid #3b82f6;
         font-size: 1.1rem;
         padding: 10px 20px;
         border-radius: 5px;
@@ -86,7 +87,7 @@
     }
 
         .btn-secondary:hover {
-            background-color: #457b9d;
+            background-color: #3b82f6;
             color: #fff;
         }
 </style>
