@@ -39,6 +39,9 @@
                             <p><strong>Date:</strong> @message.Timestamp.ToString("dd MMM yyyy, HH:mm")</p>
                             <p><strong>Message:</strong> @message.Body.Substring(0, Math.Min(100, message.Body.Length))...</p>
                         </div>
+                        <div class="message-actions">
+                            <button class="delete-button" onclick="confirmDelete(@message.EmailID)">Delete</button>
+                        </div>
                     </div>
                 }
             }
@@ -50,6 +53,22 @@
     </div>
 </div>
 
+<script>
+    function confirmDelete(emailID) {
+        if (confirm("Are you sure you want to delete this message?")) {
+            fetch(`/Sent/Delete/${emailID}`, { method: "DELETE" })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Message deleted successfully!");
+                        window.location.reload();
+                    } else {
+                        alert("Failed to delete the message.");
+                    }
+                })
+                .catch(err => console.error(err));
+        }
+    }
+</script>
 
 <style>
     /* General Styling */
@@ -79,35 +98,35 @@
         border-right: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-        .sidebar h3 {
-            text-align: center;
-            color: #58a6ff;
-            margin-bottom: 20px;
-        }
+    .sidebar h3 {
+        text-align: center;
+        color: #58a6ff;
+        margin-bottom: 20px;
+    }
 
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
+    .sidebar ul {
+        list-style: none;
+        padding: 0;
+    }
 
-            .sidebar ul li {
-                margin: 10px 0;
-            }
+    .sidebar ul li {
+        margin: 10px 0;
+    }
 
-                .sidebar ul li a {
-                    text-decoration: none;
-                    color: #e0e0e0;
-                    display: block;
-                    padding: 10px 15px;
-                    border-radius: 6px;
-                    transition: background 0.3s, color 0.3s;
-                }
+    .sidebar ul li a {
+        text-decoration: none;
+        color: #e0e0e0;
+        display: block;
+        padding: 10px 15px;
+        border-radius: 6px;
+        transition: background 0.3s, color 0.3s;
+    }
 
-                    .sidebar ul li a:hover,
-                    .sidebar ul li a.active {
-                        background: #58a6ff;
-                        color: #ffffff;
-                    }
+    .sidebar ul li a:hover,
+    .sidebar ul li a.active {
+        background: #58a6ff;
+        color: #ffffff;
+    }
 
     .content {
         flex: 1;
@@ -135,18 +154,18 @@
         padding-right: 10px;
     }
 
-        .messages::-webkit-scrollbar {
-            width: 8px;
-        }
+    .messages::-webkit-scrollbar {
+        width: 8px;
+    }
 
-        .messages::-webkit-scrollbar-thumb {
-            background: #58a6ff;
-            border-radius: 4px;
-        }
+    .messages::-webkit-scrollbar-thumb {
+        background: #58a6ff;
+        border-radius: 4px;
+    }
 
-            .messages::-webkit-scrollbar-thumb:hover {
-                background: #357abd;
-            }
+    .messages::-webkit-scrollbar-thumb:hover {
+        background: #357abd;
+    }
 
     .message-card {
         background: #1c2025;
@@ -156,10 +175,10 @@
         transition: transform 0.2s, box-shadow 0.2s;
     }
 
-        .message-card:hover {
-            transform: scale(1.02);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        }
+    .message-card:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
 
     .message-header {
         display: flex;
@@ -167,21 +186,10 @@
         align-items: center;
     }
 
-        .message-header h4 {
-            font-size: 1.3rem;
-            color: #58a6ff;
-            margin: 0;
-        }
-
-    .badge {
-        font-size: 0.9rem;
-        padding: 5px 10px;
-        border-radius: 8px;
-        color: #ffffff;
-    }
-
-    .badge-sent {
-        background: #58a6ff;
+    .message-header h4 {
+        font-size: 1.3rem;
+        color: #58a6ff;
+        margin: 0;
     }
 
     .message-body p {
@@ -190,20 +198,31 @@
         margin: 5px 0;
     }
 
+    .message-actions {
+        margin-top: 15px;
+        text-align: right;
+    }
+
+    .delete-button {
+        padding: 10px 20px;
+        background: #ff6b6b;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background 0.3s ease, transform 0.2s ease-in-out;
+    }
+
+    .delete-button:hover {
+        background: #e63939;
+        transform: scale(1.05);
+    }
+
     .no-messages {
         font-size: 1.2rem;
         color: #a0aec0;
         text-align: center;
         margin: 20px 0;
     }
-
-    .read-more {
-        color: #58a6ff;
-        cursor: pointer;
-        text-decoration: underline;
-    }
-
-        .read-more:hover {
-            color: #357abd;
-        }
 </style>

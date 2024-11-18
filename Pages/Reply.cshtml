@@ -1,0 +1,136 @@
+﻿@page "/Reply"
+@model MakebA_Inven_System.Pages.ReplyModel
+@{
+    ViewData["Title"] = "Reply";
+}
+
+<div class="reply-background">
+    <div class="reply-form-container">
+        <div class="header">
+            <h2>Reply to Message</h2>
+        </div>
+
+        <form method="post">
+            <div class="form-group">
+                <label for="to">To:</label>
+                <input type="email" id="to" name="To" value="@Model.To" readonly />
+            </div>
+
+            <div class="form-group">
+                <label for="subject">Subject:</label>
+                <input type="text" id="subject" name="Subject" value="@Model.Subject" readonly />
+            </div>
+
+            <div class="form-group">
+                <label for="body">Message:</label>
+                <textarea id="body" name="Body" placeholder="Write your reply..." required></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="send-button">Send Reply</button>
+                <a href="/Inbox" class="cancel-button">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #2a4365, #1e293b);
+        color: #f4f4f4;
+    }
+
+    .reply-background {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .reply-form-container {
+        width: 100%; /* ใช้พื้นที่ทั้งหมด */
+        max-width: 800px; /* กำหนดความกว้างสูงสุด */
+        padding: 30px;
+        background: #2d3748;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        animation: fadeIn 0.4s ease-in-out;
+    }
+
+    .header h2 {
+        color: #58a6ff;
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 2rem;
+        border-bottom: 1px solid #3b4252;
+        padding-bottom: 10px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+        .form-group label {
+            display: block;
+            font-size: 1.1rem;
+            color: #a0aec0;
+            margin-bottom: 8px;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            background: #1e293b;
+            color: #f4f4f4;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            height: 150px;
+            resize: none;
+        }
+
+    .form-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .send-button, .cancel-button {
+        padding: 12px 30px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        text-decoration: none;
+        text-align: center;
+        transition: background 0.3s, transform 0.2s;
+    }
+
+    .send-button {
+        background: #58a6ff;
+        color: #fff;
+    }
+
+        .send-button:hover {
+            background: #357abd;
+            transform: scale(1.05);
+        }
+
+    .cancel-button {
+        background: #a0aec0;
+        color: #1e293b;
+    }
+
+        .cancel-button:hover {
+            background: #718096;
+            transform: scale(1.05);
+        }
+</style>

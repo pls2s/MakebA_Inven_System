@@ -26,13 +26,15 @@
             {
                 @foreach (var message in Model.Messages)
                 {
-                    <div class="message-card">
-                        <div class="message-body">
-                            <p><strong>From:</strong> @message.Sender</p>
-                            <p><strong>Date:</strong> @message.Timestamp.ToString("dd MMM yyyy, HH:mm")</p>
-                            <p><strong>Message:</strong> @message.Body.Substring(0, Math.Min(100, message.Body.Length))...</p>
+                    <a href="/MessageDetails?id=@message.EmailID" class="message-link">
+                        <div class="message-card">
+                            <div class="message-body">
+                                <p><strong>From:</strong> @message.Sender</p>
+                                <p><strong>Date:</strong> @message.Timestamp.ToString("dd MMM yyyy, HH:mm")</p>
+                                <p><strong>Message:</strong> @message.Body.Substring(0, Math.Min(100, message.Body.Length))...</p>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 }
             }
             else
@@ -49,8 +51,8 @@
         margin: 0;
         padding: 0;
         font-family: 'Arial', sans-serif;
-        background: linear-gradient(135deg, #2a4365, #1e293b); /* Background Gradient */
-        color: #f4f4f4; /* White text */
+        background: linear-gradient(135deg, #2a4365, #1e293b);
+        color: #f4f4f4;
     }
 
     .inbox-container {
@@ -122,8 +124,8 @@
         display: flex;
         flex-direction: column;
         gap: 15px;
-        max-height: 500px; /* Limit height */
-        overflow-y: auto; /* Enable vertical scrolling */
+        max-height: 500px;
+        overflow-y: auto;
     }
 
         .messages::-webkit-scrollbar {
@@ -139,12 +141,24 @@
                 background: #4299e1;
             }
 
+    .message-link {
+        text-decoration: none;
+        color: inherit;
+    }
+
     .message-card {
         background: #1c2025;
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        transition: transform 0.2s, box-shadow 0.2s;
     }
+
+        .message-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+            background: #23272e;
+        }
 
     .message-body {
         margin-top: 10px;
