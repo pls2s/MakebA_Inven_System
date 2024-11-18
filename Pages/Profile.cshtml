@@ -19,7 +19,10 @@
     </aside>
 
     <div class="content">
-        <h2>Your Profile</h2>
+        <div class="header">
+            <h2>Your Profile</h2>
+        </div>
+
         @if (!string.IsNullOrEmpty(Model.Message))
         {
             <div class="alert">@Model.Message</div>
@@ -38,54 +41,113 @@
 </div>
 
 <style>
+    /* General Styling */
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(135deg, #1e293b, #24324e); /* Gradient Background */
+        color: #f4f4f4;
+    }
+
     .profile-container {
         display: flex;
         width: 90%;
-        margin: auto;
         max-width: 1200px;
+        background: #2d3748;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        margin: 20px auto;
     }
 
+    /* Sidebar */
     .sidebar {
-        width: 250px;
-        padding: 15px;
+        width: 300px;
         background: #1e293b;
-        color: white;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        padding: 20px;
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
     }
 
+    .sidebar h3 {
+        text-align: center;
+        color: #58a6ff;
+        margin-bottom: 20px;
+    }
+
+    .sidebar ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .sidebar ul li {
+        margin: 10px 0;
+    }
+
+    .sidebar ul li a {
+        text-decoration: none;
+        color: #e0e0e0;
+        display: block;
+        padding: 10px 15px;
+        border-radius: 6px;
+        transition: background 0.3s, color 0.3s;
+    }
+
+    .sidebar ul li a:hover,
+    .sidebar ul li a.active {
+        background: #58a6ff;
+        color: #ffffff;
+    }
+
+    /* Logout Button */
+    .btn-logout {
+        margin-top: 20px;
+        width: 100%;
+        padding: 10px 15px;
+        background: #e53e3e;
+        color: #ffffff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .btn-logout:hover {
+        background: #c53030;
+    }
+
+    /* Content */
     .content {
         flex: 1;
-        padding: 20px;
-        background: #f4f4f4;
+        padding: 30px;
+    }
+
+    .header h2 {
+        font-size: 2rem;
+        color: #58a6ff;
+        margin-bottom: 20px;
     }
 
     .profile-details {
-        background: #e3e3e3;
-        padding: 15px;
-        border-radius: 5px;
+        background: #1c2025;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        color: #e0e0e0;
     }
 
-    .btn-logout {
-        margin-top: 15px;
-        padding: 10px 20px;
-        color: white;
-        background: #e53e3e;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
+    .profile-details p {
+        font-size: 1rem;
+        margin: 10px 0;
     }
 
-        .btn-logout:hover {
-            background: #c53030;
-        }
-
+    /* Alert Messages */
     .alert {
         background: #f8d7da;
         color: #721c24;
-        padding: 10px;
-        border-radius: 5px;
-        margin-bottom: 15px;
+        padding: 10px 20px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        font-size: 1rem;
     }
 </style>
