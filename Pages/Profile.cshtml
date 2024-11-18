@@ -1,0 +1,91 @@
+﻿@page
+@model MakebA_Inven_System.Pages.ProfileModel
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<div class="profile-container">
+    <aside class="sidebar">
+        <h3>Menu</h3>
+        <ul>
+            <li><a href="/Inbox">Inbox</a></li>
+            <li><a href="/Compose">Compose</a></li>
+            <li><a href="/Sent">Sent</a></li>
+            <li><a href="/Profile" class="active">Profile</a></li>
+        </ul>
+        <form method="post" asp-page-handler="Logout">
+            <button class="btn-logout">Logout</button>
+        </form>
+    </aside>
+
+    <div class="content">
+        <h2>Your Profile</h2>
+        @if (!string.IsNullOrEmpty(Model.Message))
+        {
+            <div class="alert">@Model.Message</div>
+        }
+        else
+        {
+            <div class="profile-details">
+                <p><strong>First Name:</strong> @Model.UserProfile.FirstName</p>
+                <p><strong>Last Name:</strong> @Model.UserProfile.LastName</p>
+                <p><strong>Username:</strong> @Model.UserProfile.Username</p>
+                <p><strong>Email:</strong> @Model.UserProfile.Email</p>
+                <p><strong>Department:</strong> @Model.UserProfile.Department</p>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .profile-container {
+        display: flex;
+        width: 90%;
+        margin: auto;
+        max-width: 1200px;
+    }
+
+    .sidebar {
+        width: 250px;
+        padding: 15px;
+        background: #1e293b;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .content {
+        flex: 1;
+        padding: 20px;
+        background: #f4f4f4;
+    }
+
+    .profile-details {
+        background: #e3e3e3;
+        padding: 15px;
+        border-radius: 5px;
+    }
+
+    .btn-logout {
+        margin-top: 15px;
+        padding: 10px 20px;
+        color: white;
+        background: #e53e3e;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        .btn-logout:hover {
+            background: #c53030;
+        }
+
+    .alert {
+        background: #f8d7da;
+        color: #721c24;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
+</style>

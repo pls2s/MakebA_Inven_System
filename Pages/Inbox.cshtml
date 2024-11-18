@@ -49,8 +49,8 @@
         margin: 0;
         padding: 0;
         font-family: 'Arial', sans-serif;
-        background: linear-gradient(135deg, #2a4365, #1e293b); /* พื้นหลังแบบ Gradient */
-        color: #f4f4f4; /* ข้อความสีขาว */
+        background: linear-gradient(135deg, #2a4365, #1e293b); /* Background Gradient */
+        color: #f4f4f4; /* White text */
     }
 
     .inbox-container {
@@ -122,36 +122,28 @@
         display: flex;
         flex-direction: column;
         gap: 15px;
+        max-height: 500px; /* Limit height */
+        overflow-y: auto; /* Enable vertical scrolling */
     }
+
+        .messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .messages::-webkit-scrollbar-thumb {
+            background: #58a6ff;
+            border-radius: 10px;
+        }
+
+            .messages::-webkit-scrollbar-thumb:hover {
+                background: #4299e1;
+            }
 
     .message-card {
         background: #1c2025;
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    }
-
-    .message-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-        .message-header h4 {
-            margin: 0;
-            font-size: 1.3rem;
-            color: #58a6ff;
-        }
-
-    .badge {
-        padding: 5px 10px;
-        border-radius: 6px;
-        font-size: 0.9rem;
-        color: #fff;
-    }
-
-    .badge-new {
-        background: #58a6ff;
     }
 
     .message-body {
