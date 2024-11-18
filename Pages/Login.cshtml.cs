@@ -4,86 +4,105 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.Data.SqlClient;
 using System.Security.Cryptography;
 using System.Text;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace MakebA_Inven_System.Pages
 {
-	public class LoginModel : PageModel
-	{
-		[BindProperty]
-		public InputModel Input { get; set; }
+    public class LoginModel : PageModel
+    {
+        [BindProperty]
+        public InputModel Input { get; set; }
 
-		public string Message { get; set; } // ข้อความแสดงผล (สำเร็จหรือข้อผิดพลาด)
+        public string Message { get; set; }
 
-		private readonly string _connectionString = "Server=tcp:makebafinal.database.windows.net,1433;Initial Catalog=makeba;Persist Security Info=False;User ID=makeba;Password=Pls2s0727;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        private readonly string _connectionString = "Server=tcp:makebafinal.database.windows.net,1433;Initial Catalog=makeba;Persist Security Info=False;User ID=makeba;Password=Pls2s0727;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
-		public void OnGet()
-		{
-		}
+        public void OnGet()
+        {
+        }
 
-		public async Task<IActionResult> OnPostAsync()
-		{
-			if (!ModelState.IsValid)
-			{
-				return Page();
-			}
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
 
-			string hashedPassword = HashPassword(Input.Password);
+            string hashedPassword = HashPassword(Input.Password);
 
-			try
-			{
-				using (SqlConnection connection = new SqlConnection(_connectionString))
-				{
-					await connection.OpenAsync();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
 
-					string query = @"
-                        SELECT COUNT(*) FROM Users 
+                    // Query to verify username and fetch email
+                    string query = @"
+                        SELECT Email FROM Users 
                         WHERE Username = @Username 
                         AND PasswordHash = @PasswordHash";
 
-					using (SqlCommand command = new SqlCommand(query, connection))
-					{
-						command.Parameters.AddWithValue("@Username", Input.Username);
-						command.Parameters.AddWithValue("@PasswordHash", hashedPassword);
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Username", Input.Username);
+                        command.Parameters.AddWithValue("@PasswordHash", hashedPassword);
 
-						int count = (int)await command.ExecuteScalarAsync();
+                        var email = await command.ExecuteScalarAsync() as string;
 
-						if (count > 0)
-						{
-							Message = "Login successful!";
-							return RedirectToPage("/Inbox"); // เปลี่ยนเป็นหน้าเป้าหมายหลังล็อกอินสำเร็จ
-						}
-						else
-						{
-							Message = "Invalid username or password.";
-							return Page();
-						}
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				Message = "An error occurred: " + ex.Message;
-				return Page();
-			}
-		}
+                        if (!string.IsNullOrEmpty(email))
+                        {
+                            // Store email in claims for later use
+                            var claims = new List<Claim>
+                            {
+                                new Claim(ClaimTypes.Name, Input.Username),
+                                new Claim(ClaimTypes.Email, email)
+                            };
 
-		private string HashPassword(string password)
-		{
-			using (var sha256 = SHA256.Create())
-			{
-				var bytes = Encoding.UTF8.GetBytes(password);
-				var hash = sha256.ComputeHash(bytes);
-				return Convert.ToBase64String(hash);
-			}
-		}
+                            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                            var authProperties = new AuthenticationProperties
+                            {
+                                IsPersistent = true // Keep the user logged in across requests
+                            };
 
-		public class InputModel
-		{
-			[Required(ErrorMessage = "Username is required.")]
-			public string Username { get; set; } // เปลี่ยนเป็น Username อย่างเดียว
+                            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
-			[Required(ErrorMessage = "Password is required.")]
-			public string Password { get; set; }
-		}
-	}
+                            // Redirect to the inbox or desired page
+                            return RedirectToPage("/Inbox");
+                        }
+                        else
+                        {
+                            Message = "Invalid username or password.";
+                            return Page();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Message = "An error occurred: " + ex.Message;
+                return Page();
+            }
+        }
+
+        private string HashPassword(string password)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                var bytes = Encoding.UTF8.GetBytes(password);
+                var hash = sha256.ComputeHash(bytes);
+                return Convert.ToBase64String(hash);
+            }
+        }
+
+        public class InputModel
+        {
+            [Required(ErrorMessage = "Username is required.")]
+            public string Username { get; set; }
+
+            [Required(ErrorMessage = "Password is required.")]
+            public string Password { get; set; }
+        }
+    }
 }

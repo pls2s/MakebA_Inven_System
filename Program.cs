@@ -1,25 +1,23 @@
-using MakebA_Inven_System.Data;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// เพิ่ม Database Context
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+// Add Cookie Authentication
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Login"; // หน้า Login เมื่อไม่มีการ Authenticated
+        options.LogoutPath = "/Logout"; // หน้า Logout
+        options.ExpireTimeSpan = TimeSpan.FromHours(1); // อายุของ Cookie
+    });
 
+builder.Services.AddAuthorization();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
-if (!app.Environment.IsDevelopment())
-{
-	app.UseExceptionHandler("/Error");
-	app.UseHsts();
-}
-
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-app.UseRouting();
+app.UseAuthentication(); // เพิ่ม Middleware สำหรับ Authentication
 app.UseAuthorization();
+
 app.MapRazorPages();
 app.Run();
