@@ -5,72 +5,165 @@
 }
 
 <div class="register-container">
-    <div class="register-form">
-        <h2 class="text-center mb-4">Create an Account</h2>
+    <div class="register-header">
+        <h2>Create Your Account</h2>
+    </div>
 
+    <div class="register-form">
         @if (!string.IsNullOrEmpty(Model.Message))
         {
-            <div class="alert @(Model.Message.Contains("successful") ? "alert-success" : "alert-danger") text-center">
+            <div class="alert @(Model.Message.Contains("successful") ? "alert-success" : "alert-danger")">
                 @Model.Message
             </div>
         }
 
-        <form method="post">
-            <div class="form-group mb-3">
-                <label asp-for="Input.FirstName" class="form-label">First Name</label>
-                <input asp-for="Input.FirstName" class="form-control" placeholder="Enter your first name" />
-                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+        <form method="post" id="register-form" class="register-form">
+            <!-- First Name -->
+            <div class="form-group">
+                <label asp-for="Input.FirstName">First Name</label>
+                <input asp-for="Input.FirstName" class="form-control" placeholder="Enter your first name"
+                       pattern="[A-Za-z]+" title="Only letters are allowed." oninput="validateField(this)" required />
+                <span class="text-danger"></span>
             </div>
-            <div class="form-group mb-3">
-                <label asp-for="Input.LastName" class="form-label">Last Name</label>
-                <input asp-for="Input.LastName" class="form-control" placeholder="Enter your last name" />
-                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+
+            <!-- Last Name -->
+            <div class="form-group">
+                <label asp-for="Input.LastName">Last Name</label>
+                <input asp-for="Input.LastName" class="form-control" placeholder="Enter your last name"
+                       pattern="[A-Za-z]+" title="Only letters are allowed." oninput="validateField(this)" required />
+                <span class="text-danger"></span>
             </div>
-            <div class="form-group mb-3">
-                <label asp-for="Input.Username" class="form-label">Username</label>
-                <input asp-for="Input.Username" class="form-control" placeholder="Choose a username" />
-                <span asp-validation-for="Input.Username" class="text-danger"></span>
+
+            <!-- Username -->
+            <div class="form-group">
+                <label asp-for="Input.Username">Username</label>
+                <input asp-for="Input.Username" class="form-control" placeholder="Choose a username" maxlength="20"
+                       pattern="^(?![0-9]+$)[A-Za-z0-9]+$"
+                       title="Username must contain at least one letter, and cannot be only numbers."
+                       oninput="validateField(this)" required />
+                <span class="text-danger"></span>
             </div>
-            <div class="form-group mb-3">
-                <label asp-for="Input.Email" class="form-label">Email</label>
-                <input asp-for="Input.Email" type="email" class="form-control" placeholder="Enter your email" />
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label asp-for="Input.Email">Email</label>
+                <input asp-for="Input.Email" type="email" class="form-control" id="email"
+                       placeholder="Enter your email"
+                       pattern="^[^\\s@@]+@@[^\\s@@]+\\.[^\\s@@]+$"
+                       title="Please enter a valid email address (e.g., user@example.com)."
+                       oninput="validateField(this)" required />
+                <span class="text-danger"></span>
             </div>
-            <div class="form-group mb-3">
-                <label asp-for="Input.Department" class="form-label">Department</label>
-                <select asp-for="Input.Department" class="form-select">
+
+            <!-- Department -->
+            <div class="form-group">
+                <label asp-for="Input.Department">Department</label>
+                <select asp-for="Input.Department" class="form-select" required>
                     <option value="" disabled selected>Select your department</option>
                     <option value="Sales Department 1">Sales Department 1</option>
                     <option value="Sales Department 2">Sales Department 2</option>
                     <option value="Sales Department 3">Sales Department 3</option>
                     <option value="Inventory Department">Inventory Department</option>
                 </select>
-                <span asp-validation-for="Input.Department" class="text-danger"></span>
+                <span class="text-danger"></span>
             </div>
-            <div class="form-group mb-3">
-                <label asp-for="Input.Password" class="form-label">Password</label>
-                <input asp-for="Input.Password" type="password" class="form-control" placeholder="Enter your password" />
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label asp-for="Input.Password">Password</label>
+                <input asp-for="Input.Password" type="password" class="form-control" placeholder="Enter your password"
+                       title="Password must contain at least 1 uppercase, 1 lowercase letter, 1 number, 1 special character, and be 8-20 characters long."
+                       oninput="checkPasswordStrength(this)" required />
+                <span class="text-danger"></span>
             </div>
-            <div class="form-group mb-3">
-                <label asp-for="Input.ConfirmPassword" class="form-label">Confirm Password</label>
-                <input asp-for="Input.ConfirmPassword" type="password" class="form-control" placeholder="Re-enter your password" />
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+
+            <!-- Confirm Password -->
+            <div class="form-group">
+                <label asp-for="Input.ConfirmPassword">Confirm Password</label>
+                <input asp-for="Input.ConfirmPassword" type="password" class="form-control" placeholder="Re-enter your password"
+                       oninput="validatePasswordMatch()" required />
+                <span class="text-danger"></span>
             </div>
-            <div class="text-center">
-                <button type="submit" class="btn btn-primary w-100 mb-3">Register</button>
-                <a href="/Index" class="btn btn-secondary w-100">Cancel</a>
+
+            <!-- Actions -->
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Register</button>
+                <a href="/Index" class="btn btn-secondary">Home</a>
             </div>
         </form>
     </div>
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Validate individual fields
+        function validateField(input) {
+            const errorMessage = input.nextElementSibling;
+            if (!input.checkValidity()) {
+                errorMessage.textContent = input.title || "Invalid input.";
+            } else {
+                errorMessage.textContent = "";
+            }
+        }
+
+        // Check if passwords match
+        function validatePasswordMatch() {
+            const password = document.querySelector('[asp-for="Input.Password"]').value;
+            const confirmPassword = document.querySelector('[asp-for="Input.ConfirmPassword"]').value;
+            const errorMessage = document.querySelector('[asp-for="Input.ConfirmPassword"]').nextElementSibling;
+
+            if (confirmPassword && password !== confirmPassword) {
+                errorMessage.textContent = "Passwords do not match.";
+            } else {
+                errorMessage.textContent = "";
+            }
+        }
+
+        // Check password strength
+        function checkPasswordStrength(input) {
+            const errorMessage = input.nextElementSibling;
+            const password = input.value;
+
+            let message = '';
+
+            // Check for uppercase letter
+            if (!/[A-Z]/.test(password)) {
+                message += 'Password must contain at least 1 uppercase letter. ';
+            }
+
+            // Check for lowercase letter
+            if (!/[a-z]/.test(password)) {
+                message += 'Password must contain at least 1 lowercase letter. ';
+            }
+
+            // Check for number
+            if (!/\d/.test(password)) {
+                message += 'Password must contain at least 1 number. ';
+            }
+
+            // Check for special character
+            if (!/[!@@#$%^&*(),.?":{}|<>]/.test(password)) {
+                message += 'Password must contain at least 1 special character. ';
+            }
+
+            // Check for length between 8 and 20
+            if (password.length < 8 || password.length > 20) {
+                message += 'Password must be between 8 and 20 characters long. ';
+            }
+
+            // Display error message if there are any issues
+            if (message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+            } else {
+                errorMessage.textContent = '';
+                errorMessage.style.display = 'none';
+            }
+        }
+    </script>
 }
 
 <style>
-    /* พื้นหลัง */
     body {
         margin: 0;
         padding: 0;
@@ -78,97 +171,81 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background: linear-gradient(135deg, #1f2937, #3b536d); /* น้ำเงินเข้ม */
-        font-family: Arial, sans-serif;
-        color: #333;
+        background: linear-gradient(135deg, #1f2937, #3b536d);
+        font-family: 'Arial', sans-serif;
+        color: #f4f4f4;
     }
 
-    /* คอนเทนเนอร์ */
     .register-container {
-        max-height: 90vh;
-        overflow-y: auto;
-        padding: 20px;
         width: 100%;
-        max-width: 650px; /* ขนาดกรอบเล็กลง */
-        background: rgba(255, 255, 255, 0.1); /* เพิ่มความโปร่งใส */
-        border-radius: 12px;
-    }
-
-    .register-form {
-        background: #1e293b; /* สีพื้นหลังฟอร์ม */
-        color: #ffffff; /* สีตัวอักษร */
+        max-width: 700px;
         padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* เงาละมุน */
+        background: #1e293b;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
 
-        .register-form h2 {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: #3b82f6; /* ฟ้าสดใส */
-        }
-
-    /* ช่องกรอกข้อมูล */
-    .form-control,
-    .form-select {
-        border-radius: 6px;
-        padding: 12px;
-        font-size: 0.95rem;
-        border: 1px solid #4b5563; /* ขอบเทาเข้ม */
-        background: #374151; /* พื้นหลังช่องกรอกเข้ม */
-        color: #f9fafb; /* ตัวอักษร */
+    .register-header h2 {
+        font-size: 2.5rem;
+        color: #3b82f6;
+        text-align: center;
+        margin-bottom: 30px;
     }
 
-        .form-control::placeholder {
-            color: #9ca3af; /* Placeholder สีเทาอ่อน */
-        }
-
-        .form-control:focus,
-        .form-select:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 6px rgba(59, 130, 246, 0.5);
-        }
-
-    /* ปุ่ม */
-    .btn-primary {
-        background-color: #3b82f6;
-        font-size: 1rem;
-        padding: 12px;
-        font-weight: bold;
-        border-radius: 6px;
-        transition: all 0.3s ease;
-        color: #fff;
-        border: none;
-    }
-
-        .btn-primary:hover {
-            background-color: #2563eb;
-        }
-
-    .btn-secondary {
-        background-color: #6b7280;
-        font-size: 1rem;
-        padding: 12px;
-        font-weight: bold;
-        border-radius: 6px;
-        transition: all 0.3s ease;
-        color: #fff;
-        border: none;
-    }
-
-        .btn-secondary:hover {
-            background-color: #4b5563;
-        }
-
-    /* ข้อความแจ้งเตือน */
-    .alert {
-        font-size: 1rem;
+    .form-group {
         margin-bottom: 20px;
     }
 
-    /* ข้อความสีแดง */
+    .form-control,
+    .form-select {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #4b5563;
+        border-radius: 8px;
+        background: #374151;
+        color: #f4f4f4;
+        font-size: 1rem;
+        box-sizing: border-box;
+        height: 45px;
+        margin-bottom: 10px;
+    }
+
     .text-danger {
-        font-size: 0.875rem;
+        color: red;
+        font-size: 0.85rem;
+        margin-top: 5px;
+        display: block;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .btn {
+        padding: 12px 24px;
+        font-size: 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .btn-primary {
+        background: #3b82f6;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: #2563eb;
+    }
+
+    .btn-secondary {
+        background: #6b7280;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background: #4b5563;
     }
 </style>
