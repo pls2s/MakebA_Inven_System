@@ -29,20 +29,15 @@
             {
                 @foreach (var message in Model.SentMessages)
                 {
-                    <div class="message-card">
-                        <div class="message-header">
-                            <h4>@message.Subject</h4>
-                            <span class="badge badge-sent">Sent</span>
+                    <a href="/SentMessageDetails?emailId=@message.EmailID" class="message-link">
+                        <div class="message-card">
+                            <div class="message-body">
+                                <p><strong>Subject:</strong> @message.Subject</p>
+                                <p><strong>To:</strong> @message.Recipient</p>
+                                <p><strong>Date:</strong> @message.Timestamp.ToString("dd MMM yyyy, HH:mm")</p>
+                            </div>
                         </div>
-                        <div class="message-body">
-                            <p><strong>To:</strong> @message.Recipient</p>
-                            <p><strong>Date:</strong> @message.Timestamp.ToString("dd MMM yyyy, HH:mm")</p>
-                            <p><strong>Message:</strong> @message.Body.Substring(0, Math.Min(100, message.Body.Length))...</p>
-                        </div>
-                        <div class="message-actions">
-                            <button class="delete-button" onclick="confirmDelete(@message.EmailID)">Delete</button>
-                        </div>
-                    </div>
+                    </a>
                 }
             }
             else
@@ -77,7 +72,7 @@
         padding: 0;
         font-family: 'Arial', sans-serif;
         background: linear-gradient(135deg, #2a4365, #1e293b);
-        color: #e0e0e0;
+        color: #f4f4f4;
     }
 
     .inbox-container {
@@ -98,35 +93,35 @@
         border-right: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .sidebar h3 {
-        text-align: center;
-        color: #58a6ff;
-        margin-bottom: 20px;
-    }
+        .sidebar h3 {
+            text-align: center;
+            color: #58a6ff;
+            margin-bottom: 20px;
+        }
 
-    .sidebar ul {
-        list-style: none;
-        padding: 0;
-    }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
 
-    .sidebar ul li {
-        margin: 10px 0;
-    }
+            .sidebar ul li {
+                margin: 10px 0;
+            }
 
-    .sidebar ul li a {
-        text-decoration: none;
-        color: #e0e0e0;
-        display: block;
-        padding: 10px 15px;
-        border-radius: 6px;
-        transition: background 0.3s, color 0.3s;
-    }
+                .sidebar ul li a {
+                    text-decoration: none;
+                    color: #e0e0e0;
+                    display: block;
+                    padding: 10px 15px;
+                    border-radius: 6px;
+                    transition: background 0.3s, color 0.3s;
+                }
 
-    .sidebar ul li a:hover,
-    .sidebar ul li a.active {
-        background: #58a6ff;
-        color: #ffffff;
-    }
+                    .sidebar ul li a:hover,
+                    .sidebar ul li a.active {
+                        background: #58a6ff;
+                        color: #ffffff;
+                    }
 
     .content {
         flex: 1;
@@ -149,80 +144,55 @@
         display: flex;
         flex-direction: column;
         gap: 15px;
+        max-height: 500px;
         overflow-y: auto;
-        max-height: 60vh;
-        padding-right: 10px;
     }
 
-    .messages::-webkit-scrollbar {
-        width: 8px;
-    }
+        .messages::-webkit-scrollbar {
+            width: 8px;
+        }
 
-    .messages::-webkit-scrollbar-thumb {
-        background: #58a6ff;
-        border-radius: 4px;
-    }
+        .messages::-webkit-scrollbar-thumb {
+            background: #58a6ff;
+            border-radius: 10px;
+        }
 
-    .messages::-webkit-scrollbar-thumb:hover {
-        background: #357abd;
+            .messages::-webkit-scrollbar-thumb:hover {
+                background: #4299e1;
+            }
+
+    .message-link {
+        text-decoration: none;
+        color: inherit;
     }
 
     .message-card {
         background: #1c2025;
-        padding: 15px;
-        border-radius: 8px;
-        margin-bottom: 10px;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         transition: transform 0.2s, box-shadow 0.2s;
     }
 
-    .message-card:hover {
-        transform: scale(1.02);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        .message-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+            background: #23272e;
+        }
+
+    .message-body {
+        margin-top: 10px;
     }
 
-    .message-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .message-header h4 {
-        font-size: 1.3rem;
-        color: #58a6ff;
-        margin: 0;
-    }
-
-    .message-body p {
-        font-size: 0.9rem;
-        color: #e0e0e0;
-        margin: 5px 0;
-    }
-
-    .message-actions {
-        margin-top: 15px;
-        text-align: right;
-    }
-
-    .delete-button {
-        padding: 10px 20px;
-        background: #ff6b6b;
-        color: #fff;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 0.9rem;
-        transition: background 0.3s ease, transform 0.2s ease-in-out;
-    }
-
-    .delete-button:hover {
-        background: #e63939;
-        transform: scale(1.05);
-    }
+        .message-body p {
+            margin: 5px 0;
+            color: #e0e0e0;
+        }
 
     .no-messages {
+        text-align: center;
         font-size: 1.2rem;
         color: #a0aec0;
-        text-align: center;
-        margin: 20px 0;
+        margin-top: 20px;
     }
 </style>

@@ -1,0 +1,128 @@
+﻿@page
+@model MakebA_Inven_System.Pages.SentMessageDetailsModel
+@{
+    ViewData["Title"] = "Sent Message Details";
+}
+
+<div class="details-container">
+    <div class="header">
+        <h2>Message Details</h2>
+    </div>
+
+    @if (Model.Message != null)
+    {
+        <div class="message-details">
+            <p><strong>To:</strong> @Model.Message.Recipient</p>
+            <p><strong>Subject:</strong> @Model.Message.Subject</p>
+            <p><strong>Date:</strong> @Model.Message.Timestamp.ToString("dd MMM yyyy, HH:mm")</p>
+            <hr />
+            <p><strong>Message:</strong></p>
+            <p>@Model.Message.Body</p>
+        </div>
+
+        <div class="actions">
+            <form method="post" action="/SentMessageDetails/Delete">
+                <input type="hidden" name="emailId" value="@Model.Message.EmailID" />
+                <button type="submit" class="delete-button">Delete</button>
+            </form>
+            <a href="/Sent" class="back-button">Back to Sent</a>
+        </div>
+    }
+    else
+    {
+        <p class="error-message">Message not found.</p>
+    }
+</div>
+
+<style>
+    /* General Styling */
+    body {
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(135deg, #2a4365, #1e293b);
+        color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .details-container {
+        max-width: 900px;
+        margin: 50px auto;
+        background: #2d3748;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .header h2 {
+        color: #58a6ff;
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 2rem;
+        border-bottom: 1px solid #3b4252;
+        padding-bottom: 10px;
+    }
+
+    .message-details p {
+        font-size: 1rem;
+        margin: 10px 0;
+        color: #e0e0e0;
+    }
+
+    hr {
+        border: 0;
+        height: 1px;
+        background: rgba(255, 255, 255, 0.1);
+        margin: 20px 0;
+    }
+
+    .actions {
+        margin-top: 30px;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .error-message {
+        text-align: center;
+        color: #ff6b6b;
+        font-size: 1.2rem;
+    }
+
+    /* Button Styling */
+    .delete-button {
+        padding: 12px 30px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 8px;
+        text-align: center;
+        cursor: pointer;
+        background: #ff6b6b;
+        color: #fff;
+        transition: all 0.3s ease;
+    }
+
+    .delete-button:hover {
+        background: #e63939;
+        transform: scale(1.05);
+    }
+
+    .back-button {
+        padding: 12px 30px;
+        font-size: 1rem;
+        border-radius: 8px;
+        text-align: center;
+        background: #58a6ff;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .back-button:hover {
+        background: #357abd;
+        transform: scale(1.05);
+    }
+
+    /* Fade-in Animation */
+   
+</style>
