@@ -55,7 +55,7 @@ namespace MakebA_Inven_System.Pages
                         Console.WriteLine("Message inserted successfully.");
                     }
                 }
-
+                Input = new InputModel();
                 Message = "Message sent successfully!";
             }
             catch (Exception ex)

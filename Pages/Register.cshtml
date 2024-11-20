@@ -16,6 +16,23 @@
                 @Model.Message
             </div>
         }
+        @if (TempData["ShowPopup"] != null && (bool)TempData["ShowPopup"])
+        {
+            <script>
+                window.onload = function () {
+                    showSuccessPopup();  // Show the popup
+                };
+            </script>
+        }
+
+        <div id="success-popup" style="display:none;">
+            <div class="popup-content">
+                <h3>Registration successful!</h3>
+                <p>Do you want to go to the login page?</p>
+                <button onclick="goToLogin()">Yes</button>
+                <button onclick="closePopup()">No</button>
+            </div>
+        </div>
 
         <form method="post" id="register-form" class="register-form">
             <!-- First Name -->
@@ -49,7 +66,7 @@
                 <label asp-for="Input.Email">Email</label>
                 <input asp-for="Input.Email" type="email" class="form-control" id="email"
                        placeholder="Enter your email"
-                       pattern="^[^\\s@@]+@@[^\\s@@]+\\.[^\\s@@]+$"
+                       pattern="^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$"
                        title="Please enter a valid email address (e.g., user@example.com)."
                        oninput="validateField(this)" required />
                 <span class="text-danger"></span>
@@ -82,7 +99,7 @@
                 <label asp-for="Input.ConfirmPassword">Confirm Password</label>
                 <input asp-for="Input.ConfirmPassword" type="password" class="form-control" placeholder="Re-enter your password"
                        oninput="validatePasswordMatch()" required />
-                <span class="text-danger"></span>
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
 
             <!-- Actions -->
@@ -106,6 +123,21 @@
             }
         }
 
+        // Show success popup
+        function showSuccessPopup() {
+            document.getElementById("success-popup").style.display = "block";
+        }
+
+        // Close the success popup
+        function closePopup() {
+            document.getElementById("success-popup").style.display = "none";
+        }
+
+        // Redirect to Login page when "Yes" is clicked
+        function goToLogin() {
+            window.location.href = "/Login";
+        }
+
         // Check if passwords match
         function validatePasswordMatch() {
             const password = document.querySelector('[asp-for="Input.Password"]').value;
@@ -125,33 +157,21 @@
             const password = input.value;
 
             let message = '';
-
-            // Check for uppercase letter
             if (!/[A-Z]/.test(password)) {
                 message += 'Password must contain at least 1 uppercase letter. ';
             }
-
-            // Check for lowercase letter
             if (!/[a-z]/.test(password)) {
                 message += 'Password must contain at least 1 lowercase letter. ';
             }
-
-            // Check for number
             if (!/\d/.test(password)) {
                 message += 'Password must contain at least 1 number. ';
             }
-
-            // Check for special character
             if (!/[!@@#$%^&*(),.?":{}|<>]/.test(password)) {
                 message += 'Password must contain at least 1 special character. ';
             }
-
-            // Check for length between 8 and 20
             if (password.length < 8 || password.length > 20) {
                 message += 'Password must be between 8 and 20 characters long. ';
             }
-
-            // Display error message if there are any issues
             if (message) {
                 errorMessage.textContent = message;
                 errorMessage.style.display = 'block';
@@ -164,6 +184,68 @@
 }
 
 <style>
+    /* เพิ่มสีสำหรับข้อความแจ้งเตือนเมื่ออีเมลซ้ำ */
+    .text-danger.email-error {
+        color: #e53e3e; /* สีแดงที่ใช้สำหรับอีเมลที่มีอยู่แล้ว */
+        font-size: 0.85rem;
+        margin-top: 5px;
+        display: block;
+    }
+
+
+    /* เพิ่มสีแดงสำหรับข้อความแจ้งเตือน */
+    .alert-danger {
+        background-color: #e53e3e; /* สีแดง */
+        color: #fff;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        font-size: 1rem;
+    }
+    /* ป๊อปอัพ */
+    #success-popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* จัดให้อยู่ตรงกลางจอ */
+        width: 400px; /* ความกว้างของป๊อปอัพ */
+        background-color: #1e293b; /* สีเข้มที่เข้ากับธีม */
+        color: #f4f4f4; /* สีข้อความ */
+        border-radius: 12px; /* ความโค้งของมุม */
+        box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5); /* เงา */
+        z-index: 1000; /* ให้อยู่เหนือส่วนอื่นของหน้าจอ */
+        display: none; /* ซ่อนโดยดีฟอลต์ */
+        text-align: center;
+        padding: 20px 30px; /* เพิ่มพื้นที่ในป๊อปอัพ */
+    }
+
+    .popup-content button {
+        margin: 10px; /* ระยะห่างระหว่างปุ่ม */
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .popup-content button:nth-child(1) { /* ปุ่ม Yes */
+            background-color: #38a169; /* สีเขียว */
+            color: #fff;
+        }
+
+            .popup-content button:nth-child(1):hover {
+                background-color: #2f855a; /* สีเขียวเข้มเมื่อ hover */
+            }
+
+        .popup-content button:nth-child(2) { /* ปุ่ม No */
+            background-color: #e53e3e; /* สีแดง */
+            color: #fff;
+        }
+
+            .popup-content button:nth-child(2):hover {
+                background-color: #c53030; /* สีแดงเข้มเมื่อ hover */
+            }
+
     body {
         margin: 0;
         padding: 0;

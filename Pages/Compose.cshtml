@@ -67,8 +67,8 @@
         margin: 0;
         padding: 0;
         font-family: 'Arial', sans-serif;
-        background: linear-gradient(135deg, #2a4365, #1e293b); /* พื้นหลังแบบ Gradient */
-        color: #f4f4f4; /* ข้อความสีขาว */
+        background: linear-gradient(135deg, #2a4365, #1e293b); /* Background Gradient */
+        color: #f4f4f4; /* White text */
     }
 
     .inbox-container {
@@ -77,11 +77,12 @@
         max-width: 1200px;
         background: #1e293b;
         border-radius: 12px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* เพิ่มเงา */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Added shadow */
         overflow: hidden;
         margin: 20px auto;
     }
 
+    /* Sidebar Styles */
     .sidebar {
         width: 300px;
         background: #1e293b;
@@ -89,37 +90,38 @@
         border-right: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-        .sidebar h3 {
-            text-align: center;
-            font-size: 1.5rem;
-            color: #58a6ff;
-            margin-bottom: 20px;
-        }
+    .sidebar h3 {
+        text-align: center;
+        font-size: 1.5rem;
+        color: #58a6ff;
+        margin-bottom: 20px;
+    }
 
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
+    .sidebar ul {
+        list-style: none;
+        padding: 0;
+    }
 
-            .sidebar ul li {
-                margin: 10px 0;
-            }
+    .sidebar ul li {
+        margin: 10px 0;
+    }
 
-                .sidebar ul li a {
-                    text-decoration: none;
-                    color: #e0e0e0;
-                    padding: 10px 15px;
-                    border-radius: 8px;
-                    display: block;
-                    transition: background 0.3s, color 0.3s;
-                }
+    .sidebar ul li a {
+        text-decoration: none;
+        color: #e0e0e0;
+        padding: 10px 15px;
+        border-radius: 8px;
+        display: block;
+        transition: background 0.3s, color 0.3s;
+    }
 
-                    .sidebar ul li a.active,
-                    .sidebar ul li a:hover {
-                        background-color: #58a6ff;
-                        color: #ffffff;
-                    }
+    .sidebar ul li a.active,
+    .sidebar ul li a:hover {
+        background-color: #58a6ff;
+        color: #ffffff;
+    }
 
+    /* Main Content Styles */
     .content {
         flex: 1;
         padding: 30px;
@@ -130,16 +132,16 @@
         text-align: center;
     }
 
-        .header h2 {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #58a6ff;
-        }
+    .header h2 {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #58a6ff;
+    }
 
-        .header p {
-            font-size: 1.1rem;
-            color: #a0aec0;
-        }
+    .header p {
+        font-size: 1.1rem;
+        color: #a0aec0;
+    }
 
     .messages {
         margin-top: 20px;
@@ -149,13 +151,13 @@
         margin-bottom: 20px;
     }
 
-        .form-group label {
-            font-size: 1rem;
-            font-weight: bold;
-            color: #a0aec0;
-            display: block;
-            margin-bottom: 5px;
-        }
+    .form-group label {
+        font-size: 1rem;
+        font-weight: bold;
+        color: #a0aec0;
+        display: block;
+        margin-bottom: 5px;
+    }
 
     .form-control {
         width: 100%;
@@ -167,15 +169,15 @@
         font-size: 1rem;
     }
 
-        .form-control::placeholder {
-            color: #a0aec0;
-        }
+    .form-control::placeholder {
+        color: #a0aec0;
+    }
 
-        .form-control:focus {
-            outline: none;
-            border-color: #63b3ed;
-            box-shadow: 0 0 5px rgba(99, 179, 237, 0.5);
-        }
+    .form-control:focus {
+        outline: none;
+        border-color: #63b3ed;
+        box-shadow: 0 0 5px rgba(99, 179, 237, 0.5);
+    }
 
     .form-actions {
         display: flex;
@@ -194,9 +196,9 @@
         transition: all 0.3s ease;
     }
 
-        .btn-primary:hover {
-            background-color: #4299e1;
-        }
+    .btn-primary:hover {
+        background-color: #4299e1;
+    }
 
     .btn-secondary {
         background-color: #2d3748;
@@ -209,9 +211,9 @@
         transition: all 0.3s ease;
     }
 
-        .btn-secondary:hover {
-            background-color: #4a5568;
-        }
+    .btn-secondary:hover {
+        background-color: #4a5568;
+    }
 
     .alert {
         padding: 15px;
