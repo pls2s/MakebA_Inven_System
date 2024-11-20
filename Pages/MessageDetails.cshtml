@@ -1,4 +1,4 @@
-﻿@page "/MessageDetails"
+﻿@page
 @model MakebA_Inven_System.Pages.MessageDetailsModel
 @{
     ViewData["Title"] = "Message Details";
@@ -22,7 +22,10 @@
         </div>
 
         <div class="actions">
-            <button class="delete-button" onclick="confirmDelete(@Model.Message.EmailID)">Delete</button>
+            <form id="delete-form" method="post" asp-page-handler="Delete" style="display: inline;">
+                <input type="hidden" name="id" value="@Model.Message.EmailID" />
+                <button type="button" class="delete-button" onclick="confirmDelete()">Delete</button>
+            </form>
             <a href="/Reply?replyTo=@Model.Message.Sender&subject=RE: @Model.Message.Subject" class="reply-button">Reply</a>
             <a href="/Inbox" class="back-button">Back to Inbox</a>
         </div>
@@ -34,40 +37,21 @@
 </div>
 
 <script>
-    function confirmDelete(id) {
+    function confirmDelete() {
         if (confirm("Are you sure you want to delete this message?")) {
-            fetch(`/MessageDetails/Delete/${id}`, { method: "DELETE" })
-                .then(response => {
-                    if (response.ok) {
-                        alert("Message deleted successfully!");
-                        window.location.href = "/Inbox";
-                    } else {
-                        alert("Failed to delete the message.");
-                    }
-                })
-                .catch(err => console.error(err));
+            document.getElementById("delete-form").submit();
         }
     }
 </script>
 
 <style>
-    /* General Styling */
-    body {
-        font-family: 'Arial', sans-serif;
-        background: linear-gradient(135deg, #2a4365, #1e293b);
-        color: #f4f4f4;
-        margin: 0;
-        padding: 0;
-    }
-
     .details-container {
-        max-width: 900px; /* Increased width for better visibility */
+        max-width: 900px;
         margin: 50px auto;
         background: #2d3748;
         border-radius: 12px;
         padding: 30px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-        animation: fadeIn 0.3s ease-in-out;
     }
 
     .header h2 {
@@ -99,13 +83,6 @@
         gap: 20px;
     }
 
-    .error-message {
-        text-align: center;
-        color: #ff6b6b;
-        font-size: 1.2rem;
-    }
-
-    /* Button Styling */
     .delete-button, .reply-button, .back-button {
         padding: 12px 30px;
         font-size: 1rem;
@@ -147,7 +124,4 @@
             background: #718096;
             transform: scale(1.05);
         }
-
-    /* Fade-in Animation */
-   
 </style>

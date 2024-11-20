@@ -65,7 +65,16 @@ namespace MakebA_Inven_System.Pages
                     using (SqlCommand command = new SqlCommand(deleteQuery, connection))
                     {
                         command.Parameters.AddWithValue("@EmailID", id);
-                        command.ExecuteNonQuery();
+                        int rowsAffected = command.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            TempData["Message"] = "Email deleted successfully.";
+                        }
+                        else
+                        {
+                            TempData["Message"] = "Failed to delete email.";
+                        }
                     }
                 }
 
@@ -73,8 +82,8 @@ namespace MakebA_Inven_System.Pages
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error: {ex.Message}");
-                return Page();
+                TempData["Message"] = $"Error deleting email: {ex.Message}";
+                return RedirectToPage("/Inbox");
             }
         }
 
