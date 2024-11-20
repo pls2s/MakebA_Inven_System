@@ -40,7 +40,6 @@
 
 <style>
     /* General Styling */
-    /* General Styling */
     body {
         margin: 0;
         padding: 0;
@@ -71,7 +70,6 @@
         justify-content: center;
     }
 
-        /* Form Header */
         .login-form h2 {
             font-size: 1.8rem;
             text-align: center;
@@ -81,7 +79,6 @@
             padding-bottom: 10px;
         }
 
-    /* Form Fields */
     .form-control {
         width: 100%;
         padding: 12px;
@@ -91,7 +88,7 @@
         background: #374151;
         color: #f8f9fa;
         font-size: 1rem;
-        box-sizing: border-box; /* Make sure the box model is correct */
+        box-sizing: border-box;
     }
 
         .form-control:focus {
@@ -100,14 +97,19 @@
             box-shadow: 0 0 6px rgba(59, 130, 246, 0.5);
         }
 
-    /* Form Labels */
     .form-label {
         font-size: 0.9rem;
         color: #a0aec0;
         margin-bottom: 5px;
     }
 
-    /* Buttons */
+    .form-actions {
+        display: flex;
+        justify-content: center; /* Center the buttons horizontally */
+        gap: 20px; /* Add spacing between the buttons */
+        margin-top: 20px;
+    }
+
     .btn-primary {
         flex: 1;
         padding: 10px 20px;
@@ -144,7 +146,6 @@
             transform: scale(1.05);
         }
 
-    /* Alert Message */
     .alert {
         padding: 10px;
         border-radius: 6px;
@@ -163,10 +164,8 @@
         color: #ffffff;
     }
 
-    /* Validation Errors */
     .text-danger {
         font-size: 0.85rem;
         color: #e53e3e;
     }
-
 </style>

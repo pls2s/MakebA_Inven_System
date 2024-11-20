@@ -21,9 +21,9 @@
         </div>
 
         <div class="actions">
-            <form method="post" asp-page-handler="Delete" style="display:inline;">
+            <form method="post" asp-page-handler="Delete" id="delete-form" style="display:inline;">
                 <input type="hidden" name="emailId" value="@Model.Message.EmailID" />
-                <button type="submit" class="delete-button">Delete</button>
+                <button type="button" class="delete-button" onclick="confirmDelete()">Delete</button>
             </form>
             <a href="/Sent" class="back-button">Back to Sent</a>
         </div>
@@ -33,6 +33,14 @@
         <p class="error-message">Message not found.</p>
     }
 </div>
+
+<script>
+    function confirmDelete() {
+        if (confirm("Are you sure you want to delete this message?")) {
+            document.getElementById("delete-form").submit();
+        }
+    }
+</script>
 
 <style>
     .details-container {
