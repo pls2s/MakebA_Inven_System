@@ -4,6 +4,15 @@
     ViewData["Title"] = "Reply";
 }
 
+@if (TempData["ReplySuccessMessage"] != null)
+{
+    <div class="success-message">
+        <span>Reply sent successfully!</span>
+        <span>Back to Inbox</span>
+        <button class="confirm-button" onclick="goToInbox()">Yes</button>
+    </div>
+}
+
 <div class="reply-background">
     <div class="reply-form-container">
         <div class="header">
@@ -30,11 +39,82 @@
                 <button type="submit" class="send-button">Send Reply</button>
                 <a href="/Inbox" class="cancel-button">Cancel</a>
             </div>
+          
         </form>
+       
+
     </div>
 </div>
+@section Scripts {
+    <script>
+        function goToInbox() {
+            window.location.href = "/Inbox";
+        }
+    </script>
+}
 
-<style>
+   <style>
+    .success-message {
+        position: fixed;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #38a169; /* Vibrant green for success */
+        color: #ffffff; /* White text for contrast */
+        padding: 25px 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        width: 350px;
+        animation: fadeIn 0.4s ease-in-out;
+        z-index: 1000;
+    }
+
+        .success-message span {
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+    .confirm-button {
+        background: #2f855a; /* Slightly darker green for the button */
+        color: #ffffff;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 10px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s;
+        text-align: center;
+        font-weight: bold;
+    }
+
+        .confirm-button:hover {
+            background: #276749; /* Darker green on hover */
+            transform: scale(1.05); /* Slight enlargement on hover */
+        }
+
+    .close-button {
+        background: transparent;
+        border: none;
+        color: #fff;
+        font-size: 1.2rem;
+        font-weight: bold;
+        cursor: pointer;
+        margin-left: 10px;
+        transition: color 0.2s ease-in-out;
+    }
+
+    .close-button:hover {
+        color: #e2e8f0;
+    }
+
+   
+
+
     body {
         font-family: 'Arial', sans-serif;
         margin: 0;
@@ -133,4 +213,25 @@
             background: #718096;
             transform: scale(1.05);
         }
+
+    .alert {
+        padding: 10px 20px;
+        margin-bottom: 20px;
+        border-radius: 6px;
+        font-size: 1rem;
+        text-align: center;
+        display: none;
+    }
+
+    .alert-success {
+        display: block;
+        background: #38a169;
+        color: #ffffff;
+    }
+
+    .alert-danger {
+        display: block;
+        background: #e53e3e;
+        color: #ffffff;
+    }
 </style>

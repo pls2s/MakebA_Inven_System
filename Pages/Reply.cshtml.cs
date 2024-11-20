@@ -43,31 +43,30 @@ namespace MakebA_Inven_System.Pages
                     await connection.OpenAsync();
 
                     string query = @"
-                        INSERT INTO Emails (Sender, Recipient, Subject, Body, Timestamp, Status)
-                        VALUES (@Sender, @Recipient, @Subject, @Body, GETDATE(), 'Sent')";
+                INSERT INTO Emails (Sender, Recipient, Subject, Body, Timestamp, Status)
+                VALUES (@Sender, @Recipient, @Subject, @Body, GETDATE(), 'Sent')";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         // Retrieve the sender's email from the logged-in user's context
                         string senderEmail = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Email)?.Value;
 
-                        if (string.IsNullOrEmpty(senderEmail))
+                        if (!string.IsNullOrEmpty(senderEmail))
                         {
-                            Message = "Unable to identify the sender's email.";
-                            return Page();
+                            command.Parameters.AddWithValue("@Sender", senderEmail);
+                            command.Parameters.AddWithValue("@Recipient", Input.To);
+                            command.Parameters.AddWithValue("@Subject", Input.Subject);
+                            command.Parameters.AddWithValue("@Body", Input.Body);
+
+                            await command.ExecuteNonQueryAsync();
                         }
-
-                        command.Parameters.AddWithValue("@Sender", senderEmail);
-                        command.Parameters.AddWithValue("@Recipient", Input.To);
-                        command.Parameters.AddWithValue("@Subject", Input.Subject);
-                        command.Parameters.AddWithValue("@Body", Input.Body);
-
-                        await command.ExecuteNonQueryAsync();
-                        Message = "Reply sent successfully!";
                     }
                 }
 
-                return RedirectToPage("/Sent"); // Redirect to the Sent page after successful reply
+                // Store the success message in TempData
+                TempData["ReplySuccessMessage"] = "Reply sent successfully to all recipients!";
+                ModelState.Clear(); // Clear the form
+                return RedirectToPage(); // Stay on the same page
             }
             catch (Exception ex)
             {
@@ -75,6 +74,8 @@ namespace MakebA_Inven_System.Pages
                 return Page();
             }
         }
+
+
 
         public class ReplyInputModel
         {
