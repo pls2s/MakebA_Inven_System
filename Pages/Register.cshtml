@@ -24,15 +24,15 @@
                 };
             </script>
         }
-
-        <div id="success-popup" style="display:none;">
+        <!-- Registration Success Pop-up -->
+        <div id="success-popup">
             <div class="popup-content">
                 <h3>Registration successful!</h3>
                 <p>Do you want to go to the login page?</p>
-                <button onclick="goToLogin()">Yes</button>
-                <button onclick="closePopup()">No</button>
+                <button onclick="goToLogin()">Yes</button> <!-- Keep only Yes button -->
             </div>
         </div>
+
 
         <form method="post" id="register-form" class="register-form">
             <!-- First Name -->
@@ -207,44 +207,33 @@
         position: fixed;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%); /* จัดให้อยู่ตรงกลางจอ */
-        width: 400px; /* ความกว้างของป๊อปอัพ */
-        background-color: #1e293b; /* สีเข้มที่เข้ากับธีม */
-        color: #f4f4f4; /* สีข้อความ */
-        border-radius: 12px; /* ความโค้งของมุม */
-        box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5); /* เงา */
-        z-index: 1000; /* ให้อยู่เหนือส่วนอื่นของหน้าจอ */
-        display: none; /* ซ่อนโดยดีฟอลต์ */
+        transform: translate(-50%, -50%);
+        width: 400px;
+        background-color: #1e293b; /* สีที่เข้ากับธีม */
+        color: #f4f4f4;
+        border-radius: 12px;
+        box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        display: none;
         text-align: center;
-        padding: 20px 30px; /* เพิ่มพื้นที่ในป๊อปอัพ */
+        padding: 20px 30px;
     }
 
     .popup-content button {
-        margin: 10px; /* ระยะห่างระหว่างปุ่ม */
-        padding: 10px 20px;
-        border: none;
+        margin-top: 10px;
+        padding: 15px 30px; /* ปรับขนาดปุ่ม */
         border-radius: 8px;
+        background-color: #38a169; /* สีเขียวที่เด่นจากพื้นหลัง */
+        color: #fff;
         cursor: pointer;
+        font-size: 1.2rem; /* ขนาดข้อความปุ่ม */
         transition: background-color 0.3s ease;
     }
 
-        .popup-content button:nth-child(1) { /* ปุ่ม Yes */
-            background-color: #38a169; /* สีเขียว */
-            color: #fff;
+        .popup-content button:hover {
+            background-color: #2f855a; /* สีเขียวเข้มเมื่อ hover */
         }
 
-            .popup-content button:nth-child(1):hover {
-                background-color: #2f855a; /* สีเขียวเข้มเมื่อ hover */
-            }
-
-        .popup-content button:nth-child(2) { /* ปุ่ม No */
-            background-color: #e53e3e; /* สีแดง */
-            color: #fff;
-        }
-
-            .popup-content button:nth-child(2):hover {
-                background-color: #c53030; /* สีแดงเข้มเมื่อ hover */
-            }
 
     body {
         margin: 0;
