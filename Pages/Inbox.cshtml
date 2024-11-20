@@ -21,10 +21,43 @@
             <p>Below are the messages for your account: <strong>@Model.LoggedInUserEmail</strong></p>
         </div>
 
+        
+
+<!-- Search and Filter -->
+        <div class="search-filter">
+            <form method="get" class="form-inline" id="searchForm">
+                <input type="text" name="SearchQuery" value="@Model.SearchQuery" placeholder="Search..." class="search-input" />
+
+                <select name="FilterOption" class="filter-dropdown" id="filterDropdown">
+                    <option value="">All</option>
+                    <option value="Sender">Sender</option>
+                    <option value="Subject">Subject</option>
+                    <option value="Date">Date</option>
+                </select>
+
+                <button type="submit" class="btn-search">Search</button>
+            </form>
+        </div>
+
+        <script>
+            // Automatically select the correct option based on the query string value
+            document.addEventListener("DOMContentLoaded", function () {
+                const urlParams = new URLSearchParams(window.location.search);
+                const filterOption = urlParams.get("FilterOption");
+
+                // Set the dropdown value based on the query parameter
+                if (filterOption) {
+                    const dropdown = document.getElementById("filterDropdown");
+                    dropdown.value = filterOption;
+                }
+            });
+        </script>
+
+        <!-- Display Messages -->
         <div class="messages">
-            @if (Model.Messages.Any())
+            @if (Model.FilteredMessages.Any())
             {
-                @foreach (var message in Model.Messages)
+                @foreach (var message in Model.FilteredMessages)
                 {
                     <a href="/MessageDetails?id=@message.EmailID" class="message-link">
                         <div class="message-card">
@@ -40,7 +73,7 @@
             }
             else
             {
-                <p class="no-messages">No messages found for your inbox.</p>
+                <p class="no-messages">No messages found matching your criteria.</p>
             }
         </div>
     </div>
@@ -66,6 +99,68 @@
         overflow: hidden;
         margin: 20px auto;
     }
+    /* General Styling */
+    .search-filter {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .form-inline {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .search-input {
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #4b5563;
+        border-radius: 6px;
+        background-color: #374151;
+        color: #f4f4f4;
+        width: 200px;
+        outline: none;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+        .search-input:focus {
+            border-color: #58a6ff;
+            box-shadow: 0 0 5px rgba(88, 166, 255, 0.5);
+        }
+
+    .filter-dropdown {
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #4b5563;
+        border-radius: 6px;
+        background-color: #374151;
+        color: #f4f4f4;
+        outline: none;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+        .filter-dropdown:focus {
+            border-color: #58a6ff;
+            box-shadow: 0 0 5px rgba(88, 166, 255, 0.5);
+        }
+
+    .btn-search {
+        padding: 10px 20px;
+        font-size: 1rem;
+        background-color: #58a6ff;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+        .btn-search:hover {
+            background-color: #4299e1;
+            transform: scale(1.05);
+        }
 
     .sidebar {
         width: 300px;
@@ -119,6 +214,51 @@
     .header p {
         font-size: 1.1rem;
         color: #a0aec0;
+    }
+
+    /* Search and Filter */
+    .search-filter {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .form-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .search-input {
+        padding: 10px;
+        font-size: 1rem;
+        border-radius: 6px;
+        border: 1px solid #4a5568;
+        background: #2d3748;
+        color: #f4f4f4;
+    }
+
+    .filter-dropdown {
+        padding: 10px;
+        font-size: 1rem;
+        border-radius: 6px;
+        border: 1px solid #4a5568;
+        background: #2d3748;
+        color: #f4f4f4;
+    }
+
+    .btn-search {
+        padding: 10px 20px;
+        background: #58a6ff;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1rem;
+    }
+
+    .btn-search:hover {
+        background: #4299e1;
     }
 
     .messages {

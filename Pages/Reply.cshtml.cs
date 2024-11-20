@@ -56,8 +56,8 @@ namespace MakebA_Inven_System.Pages
 
                         await command.ExecuteNonQueryAsync();
 
-                        // Set TempData to trigger the popup
-                        TempData["MessageSent"] = true;
+                        Message = "Message sent successfully!";
+                        TempData["ReplySuccessMessage"] = true;
                         TempData["RecipientEmail"] = Input.To;
                     }
                 }
