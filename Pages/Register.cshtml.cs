@@ -35,10 +35,10 @@ namespace MakebA_Inven_System.Pages
                 {
                     await connection.OpenAsync();
 
-                    // ตรวจสอบ Email และ Username ซ้ำ
+                    // Check for duplicate email or username
                     string checkQuery = @"
-                        SELECT COUNT(*) FROM Users 
-                        WHERE Email = @Email OR Username = @Username";
+                SELECT COUNT(*) FROM Users 
+                WHERE Email = @Email OR Username = @Username";
 
                     using (SqlCommand checkCommand = new SqlCommand(checkQuery, connection))
                     {
@@ -54,10 +54,10 @@ namespace MakebA_Inven_System.Pages
                         }
                     }
 
-                    // เพิ่มข้อมูลใหม่
+                    // Insert new user
                     string query = @"
-                        INSERT INTO Users (FirstName, LastName, Username, Email, Department, PasswordHash)
-                        VALUES (@FirstName, @LastName, @Username, @Email, @Department, @PasswordHash)";
+                INSERT INTO Users (FirstName, LastName, Username, Email, Phone, Department, PasswordHash)
+                VALUES (@FirstName, @LastName, @Username, @Email, @Phone, @Department, @PasswordHash)";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
@@ -65,6 +65,7 @@ namespace MakebA_Inven_System.Pages
                         command.Parameters.AddWithValue("@LastName", Input.LastName);
                         command.Parameters.AddWithValue("@Username", Input.Username);
                         command.Parameters.AddWithValue("@Email", Input.Email);
+                        command.Parameters.AddWithValue("@Phone", Input.Phone); // Save phone number
                         command.Parameters.AddWithValue("@Department", Input.Department);
                         command.Parameters.AddWithValue("@PasswordHash", hashedPassword);
 
@@ -73,8 +74,8 @@ namespace MakebA_Inven_System.Pages
                 }
 
                 Message = "Registration successful!";
-                TempData["ShowPopup"] = true;  // ใช้ TempData เพื่อส่งค่าไปยัง frontend
-                ModelState.Clear();  // Clear the form
+                TempData["ShowPopup"] = true;
+                ModelState.Clear();
                 return RedirectToPage();
             }
             catch (Exception ex)
@@ -83,6 +84,7 @@ namespace MakebA_Inven_System.Pages
                 return Page();
             }
         }
+
 
         // ฟังก์ชันสำหรับแฮชรหัสผ่าน
         private string HashPassword(string password)
@@ -112,15 +114,21 @@ namespace MakebA_Inven_System.Pages
             public string Email { get; set; }
 
             [Required]
+            [RegularExpression(@"^\d+$", ErrorMessage = "Phone number can only contain numbers.")]
+            [StringLength(15, ErrorMessage = "Phone number cannot exceed 15 digits.")]
+            public string Phone { get; set; } // New field for phone number
+
+            [Required]
             public string Department { get; set; }
 
-
-            [Required(ErrorMessage = "Password is required.")]
+            [Required]
             public string Password { get; set; }
 
-            [Required(ErrorMessage = "Please confirm your password.")]
+            [Required]
             [Compare("Password", ErrorMessage = "Passwords do not match.")]
             public string ConfirmPassword { get; set; }
         }
+
     }
 }
+

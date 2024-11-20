@@ -4,6 +4,8 @@
     ViewData["Title"] = "Profile";
 }
 
+
+
 <div class="profile-container">
     <aside class="sidebar">
         <h3>Menu</h3>
@@ -35,11 +37,11 @@
                 <p><strong>Username:</strong> @Model.UserProfile.Username</p>
                 <p><strong>Email:</strong> @Model.UserProfile.Email</p>
                 <p><strong>Department:</strong> @Model.UserProfile.Department</p>
+                <p><strong>Phone:</strong> @Model.UserProfile.Phone</p> <!-- Added Phone -->
             </div>
         }
     </div>
 </div>
-
 <style>
     /* General Styling */
     body {

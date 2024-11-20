@@ -34,7 +34,7 @@ namespace MakebA_Inven_System.Pages
                     connection.Open();
 
                     string query = @"
-                        SELECT FirstName, LastName, Username, Email, Department
+                        SELECT FirstName, LastName, Username, Email, Department, Phone
                         FROM Users
                         WHERE Email = @Email";
 
@@ -51,6 +51,7 @@ namespace MakebA_Inven_System.Pages
                                 UserProfile.Username = reader.GetString(2);
                                 UserProfile.Email = reader.GetString(3);
                                 UserProfile.Department = reader.GetString(4);
+                                UserProfile.Phone = reader.GetString(5);
                             }
                         }
                     }
@@ -75,6 +76,7 @@ namespace MakebA_Inven_System.Pages
             public string Username { get; set; }
             public string Email { get; set; }
             public string Department { get; set; }
+            public string Phone { get; set; }
         }
     }
 }

@@ -72,6 +72,14 @@
                 <span class="text-danger"></span>
             </div>
 
+            <div class="form-group">
+                <label asp-for="Input.Phone">Phone</label>
+                <input asp-for="Input.Phone" class="form-control" placeholder="Enter your phone number"
+                       pattern="^\d+$" maxlength="15" 
+                       title="Phone number must contain only numbers." 
+                       oninput="validatePhoneNumber(this)" required />
+                <span asp-validation-for="Input.Phone" class="text-danger"></span>
+            </div>
             <!-- Department -->
             <div class="form-group">
                 <label asp-for="Input.Department">Department</label>
@@ -180,6 +188,32 @@
                 errorMessage.style.display = 'none';
             }
         }
+
+        // Function to validate the phone number field
+        function validatePhoneNumber(input) {
+            const errorMessage = input.nextElementSibling;
+            const phoneRegex = /^\d+$/; // Only digits allowed
+
+            if (!phoneRegex.test(input.value)) {
+                errorMessage.textContent = "Phone number can only contain numbers.";
+                input.style.borderColor = "red"; // Highlight the input field
+            } else if (input.value.length > 15) {
+                errorMessage.textContent = "Phone number cannot exceed 15 digits.";
+                input.style.borderColor = "red";
+            } else {
+                errorMessage.textContent = ""; // Clear the error message if valid
+                input.style.borderColor = ""; // Reset the input border
+            }
+        }
+
+        // Attach the validation function to the phone number field
+        document.addEventListener("DOMContentLoaded", () => {
+            const phoneInput = document.querySelector('[asp-for="Input.Phone"]');
+            if (phoneInput) {
+                phoneInput.addEventListener("input", () => validatePhoneNumber(phoneInput));
+            }
+        });
+
     </script>
 }
 
@@ -272,14 +306,39 @@
         color: #f4f4f4;
     }
 
+    
+    /* For the register container to handle overflow */
     .register-container {
         width: 100%;
         max-width: 700px;
+        max-height: 90vh; /* Limit the height to 90% of the viewport */
+        overflow-y: auto; /* Enable vertical scrolling */
         padding: 30px;
         background: #1e293b;
         border-radius: 12px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
+
+    /* Customize scrollbar appearance */
+    .register-container::-webkit-scrollbar {
+        width: 10px; /* Width of the scrollbar */
+    }
+
+    .register-container::-webkit-scrollbar-thumb {
+        background-color: #3b82f6; /* Scrollbar color */
+        border-radius: 10px; /* Round edges */
+        border: 2px solid #1e293b; /* Padding around scrollbar */
+    }
+
+        .register-container::-webkit-scrollbar-thumb:hover {
+            background-color: #2563eb; /* Scrollbar color on hover */
+        }
+
+    .register-container::-webkit-scrollbar-track {
+        background-color: #374151; /* Scrollbar track background */
+        border-radius: 10px; /* Round edges for track */
+    }
+
 
     .register-header h2 {
         font-size: 2.5rem;
