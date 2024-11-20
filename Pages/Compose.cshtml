@@ -6,6 +6,28 @@
     ViewData["Title"] = "Compose";
 }
 
+
+
+
+@if (TempData["RecipientNotFound"] != null && (bool)TempData["RecipientNotFound"])
+{
+    <div id="recipient-warning" class="popup">
+        <div class="popup-content">
+            <h3>Recipient Not Found</h3>
+            <p>The email <strong>@TempData["RecipientEmail"]</strong> does not exist in the system.</p>
+            <p>Do you still want to send the message?</p>
+            <form method="post">
+                <input type="hidden" name="To" value="@TempData["RecipientEmail"]" />
+                <input type="hidden" name="Subject" value="@TempData["Subject"]" />
+                <input type="hidden" name="Body" value="@TempData["Body"]" />
+                <button type="submit" class="btn-confirm" name="sendAnyway" value="true">Yes, Send</button>
+                <button type="button" class="btn-cancel" onclick="closePopup()">No, Cancel</button>
+            </form>
+        </div>
+    </div>
+}
+
+
 <div class="inbox-container">
     <!-- Sidebar Menu -->
     <aside class="sidebar">
@@ -57,12 +79,106 @@
     </div>
 </div>
 
+
+
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function sendAnyway() {
+            document.getElementById('recipient-warning').style.display = 'none';
+            document.querySelector('[name="To"]').value = '@TempData["RecipientEmail"]';
+            document.querySelector('[name="Subject"]').value = '@TempData["Subject"]';
+            document.querySelector('[name="Body"]').value = '@TempData["Body"]';
+            document.querySelector('form').submit();
+        }
+        function cancelSend() {
+            window.location.href = "/Compose";
+        }
+
+        function closePopup() {
+            const popup = document.getElementById('recipient-warning');
+            if (popup) {
+                popup.style.display = 'none'; // Hide the popup
+            }
+        }
+
+        function closeSuccessPopup() {
+            const popup = document.getElementById('success-popup');
+            if (popup) {
+                popup.style.display = 'none'; // Hide the success popup
+            }
+        }
+
+        // Automatically show the popup when the page loads (if needed)
+        window.onload = function () {
+            const popup = document.getElementById('success-popup');
+            if (popup) {
+                popup.style.display = 'block'; // Show the success popup
+            }
+        };
+        <partial name="_ValidationScriptsPartial" />
+    </script>
 }
 
 <style>
     /* General Styles */
+ 
+    .popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #2d3748;
+        color: #ffffff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+        width: 400px;
+        text-align: center;
+    }
+
+    .popup h3 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        color: #f56565;
+    }
+
+    .popup p {
+        font-size: 1rem;
+        margin-bottom: 20px;
+    }
+
+    .btn-confirm {
+        background: #38a169;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-size: 1rem;
+        cursor: pointer;
+        margin-right: 10px;
+        transition: background 0.3s;
+    }
+
+        .btn-confirm:hover {
+            background: #2f855a;
+        }
+
+    .btn-cancel {
+        background: #e53e3e;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+        .btn-cancel:hover {
+            background: #c53030;
+        }
+
     body {
         margin: 0;
         padding: 0;
@@ -215,6 +331,7 @@
         background-color: #4a5568;
     }
 
+    
     .alert {
         padding: 15px;
         border-radius: 8px;
@@ -225,10 +342,10 @@
     .alert-success {
         background-color: #38a169;
         color: #fff;
+        border: 1px solid #2f855a;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        animation: fadeIn 0.5s ease-in-out;
     }
 
-    .alert-danger {
-        background-color: #e53e3e;
-        color: #fff;
-    }
+    
 </style>

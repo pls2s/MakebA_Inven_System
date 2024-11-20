@@ -35,7 +35,6 @@ namespace MakebA_Inven_System.Pages
             {
                 return Page();
             }
-
             try
             {
                 using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -43,30 +42,27 @@ namespace MakebA_Inven_System.Pages
                     await connection.OpenAsync();
 
                     string query = @"
-                INSERT INTO Emails (Sender, Recipient, Subject, Body, Timestamp, Status)
-                VALUES (@Sender, @Recipient, @Subject, @Body, GETDATE(), 'Sent')";
+            INSERT INTO Emails (Sender, Recipient, Subject, Body, Timestamp, Status)
+            VALUES (@Sender, @Recipient, @Subject, @Body, GETDATE(), 'Sent')";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        // Retrieve the sender's email from the logged-in user's context
                         string senderEmail = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Email)?.Value;
 
-                        if (!string.IsNullOrEmpty(senderEmail))
-                        {
-                            command.Parameters.AddWithValue("@Sender", senderEmail);
-                            command.Parameters.AddWithValue("@Recipient", Input.To);
-                            command.Parameters.AddWithValue("@Subject", Input.Subject);
-                            command.Parameters.AddWithValue("@Body", Input.Body);
+                        command.Parameters.AddWithValue("@Sender", senderEmail);
+                        command.Parameters.AddWithValue("@Recipient", Input.To);
+                        command.Parameters.AddWithValue("@Subject", Input.Subject);
+                        command.Parameters.AddWithValue("@Body", Input.Body);
 
-                            await command.ExecuteNonQueryAsync();
-                        }
+                        await command.ExecuteNonQueryAsync();
+
+                        // Set TempData to trigger the popup
+                        TempData["MessageSent"] = true;
+                        TempData["RecipientEmail"] = Input.To;
                     }
                 }
 
-                // Store the success message in TempData
-                TempData["ReplySuccessMessage"] = "Reply sent successfully to all recipients!";
-                ModelState.Clear(); // Clear the form
-                return RedirectToPage(); // Stay on the same page
+                return RedirectToPage(); // Redirect back to the same page
             }
             catch (Exception ex)
             {
@@ -74,6 +70,7 @@ namespace MakebA_Inven_System.Pages
                 return Page();
             }
         }
+
 
 
 

@@ -17,7 +17,7 @@ namespace MakebA_Inven_System.Pages
 
         public void OnGet() { }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(bool sendAnyway = false)
         {
             if (!ModelState.IsValid)
             {
@@ -30,42 +30,57 @@ namespace MakebA_Inven_System.Pages
                 {
                     await connection.OpenAsync();
 
-                    string query = @"
-                        INSERT INTO Emails (Sender, Recipient, Subject, Body, Timestamp, Status)
-                        VALUES (@Sender, @Recipient, @Subject, @Body, GETDATE(), 'Sent')";
+                    // Check if the recipient email exists in the database
+                    if (!sendAnyway)
+                    {
+                        string checkRecipientQuery = "SELECT COUNT(*) FROM Users WHERE Email = @Recipient";
+                        using (SqlCommand checkCommand = new SqlCommand(checkRecipientQuery, connection))
+                        {
+                            checkCommand.Parameters.AddWithValue("@Recipient", Input.To);
+                            int recipientCount = (int)await checkCommand.ExecuteScalarAsync();
 
+                            // If recipient email does not exist
+                            if (recipientCount == 0)
+                            {
+                                TempData["RecipientNotFound"] = true; // Flag to show the warning
+                                TempData["RecipientEmail"] = Input.To; // Save the email for display
+                                TempData["Subject"] = Input.Subject; // Save the subject
+                                TempData["Body"] = Input.Body; // Save the body
+                                return RedirectToPage(); // Reload the page with the warning
+                            }
+                        }
+                    }
+
+                    // Insert the email into the database
+                    string query = @"
+            INSERT INTO Emails (Sender, Recipient, Subject, Body, Timestamp, Status)
+            VALUES (@Sender, @Recipient, @Subject, @Body, GETDATE(), 'Sent')";
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        // Retrieve the logged-in user's email from claims
-                        string loggedInSender = User.FindFirst(ClaimTypes.Email)?.Value;
-
-                        if (string.IsNullOrEmpty(loggedInSender))
-                        {
-                            Message = "No logged-in user email found. Please log in.";
-                            return Page();
-                        }
-
-                        command.Parameters.AddWithValue("@Sender", loggedInSender);
+                        string senderEmail = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Email)?.Value;
+                        command.Parameters.AddWithValue("@Sender", senderEmail);
                         command.Parameters.AddWithValue("@Recipient", Input.To);
                         command.Parameters.AddWithValue("@Subject", Input.Subject);
                         command.Parameters.AddWithValue("@Body", Input.Body);
 
-                        Console.WriteLine($"Inserting email: {loggedInSender} -> {Input.To}, Subject: {Input.Subject}");
                         await command.ExecuteNonQueryAsync();
-                        Console.WriteLine("Message inserted successfully.");
                     }
                 }
-                Input = new InputModel();
+
                 Message = "Message sent successfully!";
+                ModelState.Clear(); // Clear form inputs
+                Input = new InputModel(); // Reset the form
+                return Page(); // Stay on the same page
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error: {ex.Message}");
                 Message = $"An error occurred: {ex.Message}";
+                return Page();
             }
-
-            return Page();
         }
+
+
+
 
         public class InputModel
         {

@@ -35,6 +35,7 @@
                                 <p><strong>Subject:</strong> @message.Subject</p>
                                 <p><strong>To:</strong> @message.Recipient</p>
                                 <p><strong>Date:</strong> @message.Timestamp.ToString("dd MMM yyyy, HH:mm")</p>
+                                <p><strong>Message:</strong> @message.Body.Substring(0, Math.Min(100, message.Body.Length))...</p>
                             </div>
                         </div>
                     </a>
