@@ -56,7 +56,7 @@
                 <label asp-for="Input.Username">Username</label>
                 <input asp-for="Input.Username" class="form-control" placeholder="Choose a username" maxlength="20"
                        pattern="^(?![0-9]+$)[A-Za-z0-9]+$"
-                       title="Username must contain at least one letter, and cannot be only numbers."
+                       title="Username must not contain spaces,Username must contain at least one letter, and cannot be only numbers."
                        oninput="validateField(this)" required />
                 <span class="text-danger"></span>
             </div>
@@ -124,12 +124,19 @@
         // Validate individual fields
         function validateField(input) {
             const errorMessage = input.nextElementSibling;
-            if (!input.checkValidity()) {
+            if (input.name === "Input.Username" && /\s/.test(input.value)) {
+                // Check if it's the username field and contains whitespace
+                errorMessage.textContent = "Username must not contain spaces.";
+                input.style.borderColor = "red"; // Highlight the input field with a red border
+            } else if (!input.checkValidity()) {
                 errorMessage.textContent = input.title || "Invalid input.";
+                input.style.borderColor = "red"; // Highlight the input field
             } else {
                 errorMessage.textContent = "";
+                input.style.borderColor = ""; // Reset the input border color
             }
         }
+
 
         // Show success popup
         function showSuccessPopup() {
@@ -165,6 +172,9 @@
             const password = input.value;
 
             let message = '';
+            if (/\s/.test(password)) { // Check if the password contains whitespace
+                message += 'Password must not contain spaces. ';
+            }
             if (!/[A-Z]/.test(password)) {
                 message += 'Password must contain at least 1 uppercase letter. ';
             }
@@ -183,28 +193,43 @@
             if (message) {
                 errorMessage.textContent = message;
                 errorMessage.style.display = 'block';
+                input.style.borderColor = "red"; // Highlight the input field
             } else {
                 errorMessage.textContent = '';
                 errorMessage.style.display = 'none';
-            }
-        }
-
-        // Function to validate the phone number field
-        function validatePhoneNumber(input) {
-            const errorMessage = input.nextElementSibling;
-            const phoneRegex = /^\d+$/; // Only digits allowed
-
-            if (!phoneRegex.test(input.value)) {
-                errorMessage.textContent = "Phone number can only contain numbers.";
-                input.style.borderColor = "red"; // Highlight the input field
-            } else if (input.value.length > 15) {
-                errorMessage.textContent = "Phone number cannot exceed 15 digits.";
-                input.style.borderColor = "red";
-            } else {
-                errorMessage.textContent = ""; // Clear the error message if valid
                 input.style.borderColor = ""; // Reset the input border
             }
         }
+
+        
+
+        // Function to validate the phone number field
+        // Function to validate the phone number field
+        function validatePhoneNumber(input) {
+            const errorMessage = input.nextElementSibling;
+            const onlyNumbersRegex = /^\d*$/; // Only allows numbers
+
+            // Check if the input contains only numbers
+            if (!onlyNumbersRegex.test(input.value)) {
+                errorMessage.textContent = "Phone number can only contain numbers.";
+                input.style.borderColor = "red"; // Highlight the input field
+                return; // Exit if the input is not numeric
+            }
+
+            // Check the length of the phone number
+            if (input.value.length < 9) {
+                errorMessage.textContent = "Phone number must be at least 9 digits.";
+                input.style.borderColor = "red";
+            } else if (input.value.length > 10) {
+                errorMessage.textContent = "Phone number cannot exceed 10 digits.";
+                input.style.borderColor = "red";
+            } else {
+                // Clear the error if the input is valid
+                errorMessage.textContent = "";
+                input.style.borderColor = ""; // Reset the input border
+            }
+        }
+
 
         // Attach the validation function to the phone number field
         document.addEventListener("DOMContentLoaded", () => {
@@ -318,26 +343,142 @@
         border-radius: 12px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #1f2937, #3b536d);
+        font-family: 'Arial', sans-serif;
+        color: #f4f4f4;
+    }
 
-    /* Customize scrollbar appearance */
+    .register-container {
+        width: 100%;
+        max-width: 700px;
+        max-height: 90vh; /* Limit the height to 90% of the viewport */
+        overflow-y: auto; /* Enable vertical scrolling */
+        padding: 30px;
+        background: #1e293b;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Prevent layout shift when tooltips or long content appears */
+    .register-container .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+        gap: 8px; /* Spacing between label, input, and validation text */
+    }
+
+    /* Ensure consistent width for form elements */
+    .form-control,
+    .form-select {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #4b5563;
+        border-radius: 8px;
+        background: #374151;
+        color: #f4f4f4;
+        font-size: 1rem;
+        height: 45px;
+        box-sizing: border-box;
+    }
+
+        .form-control:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: #425066;
+            box-shadow: 0 0 6px rgba(59, 130, 246, 0.5);
+        }
+
+    .form-label {
+        color: #a0aec0;
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+    }
+
+    .text-danger {
+        color: red;
+        font-size: 0.85rem;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px; /* Add consistent spacing between buttons */
+        margin-top: 20px;
+    }
+
+    .btn {
+        padding: 12px 24px;
+        font-size: 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .btn-primary {
+        background: #3b82f6;
+        color: white;
+    }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+    .btn-secondary {
+        background: #6b7280;
+        color: white;
+    }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+    /* Customize tooltips for better display */
+    input[title]:hover::after {
+        content: attr(title);
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: 10px;
+        padding: 10px;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        max-width: 300px;
+        text-align: center;
+        z-index: 10;
+    }
+
+    input[title]:hover {
+        position: relative;
+    }
+
+    /* Scrollbar customization */
     .register-container::-webkit-scrollbar {
-        width: 10px; /* Width of the scrollbar */
+        width: 8px;
     }
 
     .register-container::-webkit-scrollbar-thumb {
-        background-color: #3b82f6; /* Scrollbar color */
-        border-radius: 10px; /* Round edges */
-        border: 2px solid #1e293b; /* Padding around scrollbar */
+        background-color: #3b82f6;
+        border-radius: 10px;
     }
 
         .register-container::-webkit-scrollbar-thumb:hover {
-            background-color: #2563eb; /* Scrollbar color on hover */
+            background-color: #2563eb;
         }
 
     .register-container::-webkit-scrollbar-track {
-        background-color: #374151; /* Scrollbar track background */
-        border-radius: 10px; /* Round edges for track */
+        background-color: #374151;
     }
+
 
 
     .register-header h2 {

@@ -35,23 +35,53 @@ namespace MakebA_Inven_System.Pages
                 {
                     await connection.OpenAsync();
 
-                    // Check for duplicate email or username
-                    string checkQuery = @"
-                SELECT COUNT(*) FROM Users 
-                WHERE Email = @Email OR Username = @Username";
+                    // Initialize error messages
+                    bool isEmailDuplicate = false;
+                    bool isUsernameDuplicate = false;
 
-                    using (SqlCommand checkCommand = new SqlCommand(checkQuery, connection))
+                    // Check for duplicate email
+                    string checkEmailQuery = "SELECT COUNT(*) FROM Users WHERE Email = @Email";
+                    using (SqlCommand checkEmailCommand = new SqlCommand(checkEmailQuery, connection))
                     {
-                        checkCommand.Parameters.AddWithValue("@Email", Input.Email);
-                        checkCommand.Parameters.AddWithValue("@Username", Input.Username);
+                        checkEmailCommand.Parameters.AddWithValue("@Email", Input.Email);
+                        int emailCount = (int)await checkEmailCommand.ExecuteScalarAsync();
 
-                        int count = (int)await checkCommand.ExecuteScalarAsync();
-
-                        if (count > 0)
+                        if (emailCount > 0)
                         {
-                            Message = "Email or Username already exists.";
-                            return Page();
+                            isEmailDuplicate = true;
                         }
+                    }
+
+                    // Check for duplicate username
+                    string checkUsernameQuery = "SELECT COUNT(*) FROM Users WHERE Username = @Username";
+                    using (SqlCommand checkUsernameCommand = new SqlCommand(checkUsernameQuery, connection))
+                    {
+                        checkUsernameCommand.Parameters.AddWithValue("@Username", Input.Username);
+                        int usernameCount = (int)await checkUsernameCommand.ExecuteScalarAsync();
+
+                        if (usernameCount > 0)
+                        {
+                            isUsernameDuplicate = true;
+                        }
+                    }
+
+                    // If there are duplicates, construct the error message
+                    if (isEmailDuplicate || isUsernameDuplicate)
+                    {
+                        if (isEmailDuplicate && isUsernameDuplicate)
+                        {
+                            Message = "Both Email and Username already exist.";
+                        }
+                        else if (isEmailDuplicate)
+                        {
+                            Message = "Email already exists.";
+                        }
+                        else if (isUsernameDuplicate)
+                        {
+                            Message = "Username already exists.";
+                        }
+
+                        return Page();
                     }
 
                     // Insert new user
@@ -84,6 +114,8 @@ namespace MakebA_Inven_System.Pages
                 return Page();
             }
         }
+
+
 
 
         // ฟังก์ชันสำหรับแฮชรหัสผ่าน
